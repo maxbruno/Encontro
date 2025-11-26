@@ -1,0 +1,140 @@
+@page
+@model Encontro.WebUI.Pages.Pessoas.EditModel
+
+@{
+    ViewData["Title"] = "Editar Pessoa";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-10 offset-md-1">
+            <h1 class="mb-4">Editar Pessoa</h1>
+
+            <div class="card">
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+                        <input type="hidden" asp-for="Pessoa.Id" />
+
+                        <div class="row mb-3">
+                            <div class="col-md-8">
+                                <label asp-for="Pessoa.Name" class="form-label"></label>
+                                <input asp-for="Pessoa.Name" class="form-control" />
+                                <span asp-validation-for="Pessoa.Name" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-4">
+                                <label asp-for="Pessoa.Type" class="form-label"></label>
+                                <input asp-for="Pessoa.Type" class="form-control" />
+                                <span asp-validation-for="Pessoa.Type" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label asp-for="Pessoa.BirthDate" class="form-label"></label>
+                                <input asp-for="Pessoa.BirthDate" class="form-control" type="date" />
+                                <span asp-validation-for="Pessoa.BirthDate" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-4">
+                                <label asp-for="Pessoa.CellPhone" class="form-label"></label>
+                                <input asp-for="Pessoa.CellPhone" class="form-control" />
+                                <span asp-validation-for="Pessoa.CellPhone" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-4">
+                                <label asp-for="Pessoa.Phone" class="form-label"></label>
+                                <input asp-for="Pessoa.Phone" class="form-control" />
+                                <span asp-validation-for="Pessoa.Phone" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <label asp-for="Pessoa.Email" class="form-label"></label>
+                                <input asp-for="Pessoa.Email" class="form-control" type="email" />
+                                <span asp-validation-for="Pessoa.Email" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-8">
+                                <label asp-for="Pessoa.Address" class="form-label"></label>
+                                <input asp-for="Pessoa.Address" class="form-control" />
+                                <span asp-validation-for="Pessoa.Address" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-4">
+                                <label asp-for="Pessoa.District" class="form-label"></label>
+                                <input asp-for="Pessoa.District" class="form-control" />
+                                <span asp-validation-for="Pessoa.District" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label asp-for="Pessoa.ZipCode" class="form-label"></label>
+                                <input asp-for="Pessoa.ZipCode" class="form-control" />
+                                <span asp-validation-for="Pessoa.ZipCode" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-8">
+                                <label asp-for="Pessoa.Group" class="form-label"></label>
+                                <input asp-for="Pessoa.Group" class="form-control" />
+                                <span asp-validation-for="Pessoa.Group" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label asp-for="Pessoa.FatherName" class="form-label"></label>
+                                <input asp-for="Pessoa.FatherName" class="form-control" />
+                                <span asp-validation-for="Pessoa.FatherName" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Pessoa.MotherName" class="form-label"></label>
+                                <input asp-for="Pessoa.MotherName" class="form-control" />
+                                <span asp-validation-for="Pessoa.MotherName" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <label asp-for="Photo" class="form-label">Foto</label>
+                                @if (!string.IsNullOrWhiteSpace(Model.Pessoa.PhotoUrl))
+                                {
+                                    <div class="mb-2">
+                                        <img src="~/@Model.Pessoa.PhotoUrl" alt="Foto atual" class="img-thumbnail" style="max-width: 200px; max-height: 200px;" />
+                                        <p class="text-muted small">Foto atual - selecione uma nova para substituir</p>
+                                    </div>
+                                }
+                                <input type="file" asp-for="Photo" class="form-control" accept="image/*" />
+                                <span asp-validation-for="Photo" class="text-danger"></span>
+                                <small class="form-text text-muted">Formatos aceitos: JPG, PNG, GIF, BMP (máx. 5MB) - Deixe em branco para manter a foto atual</small>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <label asp-for="Pessoa.Notes" class="form-label"></label>
+                                <textarea asp-for="Pessoa.Notes" class="form-control" rows="3"></textarea>
+                                <span asp-validation-for="Pessoa.Notes" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row mt-4">
+                            <div class="col">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="bi bi-check-circle"></i> Salvar Alterações
+                                </button>
+                                <a asp-page="Index" class="btn btn-secondary">
+                                    <i class="bi bi-arrow-left"></i> Voltar
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

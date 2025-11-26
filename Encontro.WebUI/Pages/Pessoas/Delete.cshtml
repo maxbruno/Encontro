@@ -1,0 +1,67 @@
+@page
+@model Encontro.WebUI.Pages.Pessoas.DeleteModel
+
+@{
+    ViewData["Title"] = "Excluir Pessoa";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-10 offset-md-1">
+            <h1 class="mb-4 text-danger">Excluir Pessoa</h1>
+
+            <div class="alert alert-warning" role="alert">
+                <h4 class="alert-heading">
+                    <i class="bi bi-exclamation-triangle"></i> Atenção!
+                </h4>
+                <p class="mb-0">Você tem certeza que deseja excluir esta pessoa?</p>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    @if (!string.IsNullOrWhiteSpace(Model.Pessoa.PhotoUrl))
+                    {
+                        <div class="text-center mb-4">
+                            <img src="~/@Model.Pessoa.PhotoUrl" alt="Foto de @Model.Pessoa.Name" class="img-thumbnail" style="max-width: 200px; max-height: 200px;" />
+                        </div>
+                    }
+
+                    <dl class="row">
+                        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Pessoa.Name)</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Pessoa.Name)</dd>
+
+                        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Pessoa.Type)</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Pessoa.Type)</dd>
+
+                        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Pessoa.BirthDate)</dt>
+                        <dd class="col-sm-9">@(Model.Pessoa.BirthDate?.ToString("dd/MM/yyyy") ?? "-")</dd>
+
+                        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Pessoa.CellPhone)</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Pessoa.CellPhone)</dd>
+
+                        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Pessoa.Phone)</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Pessoa.Phone)</dd>
+
+                        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Pessoa.Email)</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Pessoa.Email)</dd>
+
+                        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Pessoa.Group)</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Pessoa.Group)</dd>
+                    </dl>
+
+                    <form method="post">
+                        <input type="hidden" asp-for="Pessoa.Id" />
+                        <div class="mt-4">
+                            <button type="submit" class="btn btn-danger">
+                                <i class="bi bi-trash"></i> Confirmar Exclusão
+                            </button>
+                            <a asp-page="Index" class="btn btn-secondary">
+                                <i class="bi bi-arrow-left"></i> Cancelar
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

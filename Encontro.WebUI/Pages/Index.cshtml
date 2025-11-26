@@ -1,0 +1,15 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Bem-vindo ao Sistema Encontro</h1>
+    <p class="lead">Sistema de gerenciamento de pessoas</p>
+    <p>
+        <a asp-page="/Pessoas/Index" class="btn btn-primary btn-lg">
+            <i class="bi bi-people"></i> Acessar Pessoas
+        </a>
+    </p>
+</div>
