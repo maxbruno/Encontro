@@ -1,0 +1,166 @@
+# .gitignore para projetos C# .NET e Razor Pages
+# Build results
+[Bb]in/
+[Oo]bj/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Visual Studio Code
+.vscode/
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# DotCover
+.idea/
+*.dotCover
+
+# Rider
+.idea/
+*.sln.iml
+
+# NuGet
+*.nupkg
+# The packages folder can be ignored because of Package Restore
+**/packages/*
+!**/packages/build/
+!**/packages/repositories.config
+
+# Windows image file caches
+Thumbs.db
+Desktop.ini
+
+# Razor Pages
+**/obj/Debug/net*/Razor/
+**/obj/Release/net*/Razor/
+
+# IIS Express
+. vs/
+/.vs/
+
+# Logs
+*.log
+
+# Others
+*.dbmdl
+*.bak
+*.backup
+*.mdf
+*.ldf
+*.sqlite
+*.sql
+
+# Resharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+
+# Dotnet watch
+**/node_modules/
+
+# Local history for Visual Studio
+.localhistory/
+
+# JetBrains Rider
+.idea/
+*.sln.iml
+
+# User secrets
+secrets.json
+
+# Azure Functions local settings file
+local.settings.json
+
+# Mac
+.DS_Store
+
+# npm
+package-lock.json
+yarn.lock
+
+# LibMan
+libman.json
+
+# Publish
+**/publish/
+**/out/
+
+# Test results
+TestResults/
+*.trx
+*.coverage
+*.coveragejson
+
+# Others
+*.vspscc
+*.vssscc
+*.pdb
+*.cache
+*.config
+*.db
+*.bak
+*.swp
+*.swo
+*.tmp
+*.temp
+*.pid
+*.sdf
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.psess
+*.vsp
+*.vspx
+*.vsmdi
+*.testsettings
+*.vsix
+*.docstates
+*.orig
+*.rej
+*.scc
+*.ncb
+*.aps
+*.opensdf
+*.tlog
+*.log
+*.vspscc
+*.vssscc
+*.cache
+*.dbmdl
+*.bak
+*.backup
+*.mdf
+*.ldf
+*.sqlite
+*.sql
+*.db
+*.pdb
+*.swp
+*.swo
+*.tmp
+*.temp
+*.pid
+*.sdf
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.psess
+*.vsp
+*.vspx
+*.vsmdi
+*.testsettings
+*.vsix
+*.docstates
+*.orig
+*.rej
+*.scc
+*.ncb
+*.aps
+*.opensdf
+*.tlog
+*.log

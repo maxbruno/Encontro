@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\Encontro.WebUI.props" />
+</Project>

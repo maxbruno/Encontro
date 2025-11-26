@@ -1,0 +1,261 @@
+{
+  "format": 1,
+  "restore": {
+    "D:\\projetos\\Encontro\\Encontro.WebUI\\Encontro.WebUI.csproj": {}
+  },
+  "projects": {
+    "D:\\projetos\\Encontro\\Encontro.Application\\Encontro.Application.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\projetos\\Encontro\\Encontro.Application\\Encontro.Application.csproj",
+        "projectName": "Encontro.Application",
+        "projectPath": "D:\\projetos\\Encontro\\Encontro.Application\\Encontro.Application.csproj",
+        "packagesPath": "C:\\Users\\Arthur Martins\\.nuget\\packages\\",
+        "outputPath": "D:\\projetos\\Encontro\\Encontro.Application\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Arthur Martins\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "D:\\projetos\\Encontro\\Encontro.Domain\\Encontro.Domain.csproj": {
+                "projectPath": "D:\\projetos\\Encontro\\Encontro.Domain\\Encontro.Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files (x86)\\dotnet\\sdk\\8.0.416/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "D:\\projetos\\Encontro\\Encontro.Domain\\Encontro.Domain.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\projetos\\Encontro\\Encontro.Domain\\Encontro.Domain.csproj",
+        "projectName": "Encontro.Domain",
+        "projectPath": "D:\\projetos\\Encontro\\Encontro.Domain\\Encontro.Domain.csproj",
+        "packagesPath": "C:\\Users\\Arthur Martins\\.nuget\\packages\\",
+        "outputPath": "D:\\projetos\\Encontro\\Encontro.Domain\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Arthur Martins\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files (x86)\\dotnet\\sdk\\8.0.416/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "D:\\projetos\\Encontro\\Encontro.Infrastructure\\Encontro.Infrastructure.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\projetos\\Encontro\\Encontro.Infrastructure\\Encontro.Infrastructure.csproj",
+        "projectName": "Encontro.Infrastructure",
+        "projectPath": "D:\\projetos\\Encontro\\Encontro.Infrastructure\\Encontro.Infrastructure.csproj",
+        "packagesPath": "C:\\Users\\Arthur Martins\\.nuget\\packages\\",
+        "outputPath": "D:\\projetos\\Encontro\\Encontro.Infrastructure\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Arthur Martins\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "D:\\projetos\\Encontro\\Encontro.Application\\Encontro.Application.csproj": {
+                "projectPath": "D:\\projetos\\Encontro\\Encontro.Application\\Encontro.Application.csproj"
+              },
+              "D:\\projetos\\Encontro\\Encontro.Domain\\Encontro.Domain.csproj": {
+                "projectPath": "D:\\projetos\\Encontro\\Encontro.Domain\\Encontro.Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files (x86)\\dotnet\\sdk\\8.0.416/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "D:\\projetos\\Encontro\\Encontro.WebUI\\Encontro.WebUI.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\projetos\\Encontro\\Encontro.WebUI\\Encontro.WebUI.csproj",
+        "projectName": "Encontro.WebUI",
+        "projectPath": "D:\\projetos\\Encontro\\Encontro.WebUI\\Encontro.WebUI.csproj",
+        "packagesPath": "C:\\Users\\Arthur Martins\\.nuget\\packages\\",
+        "outputPath": "D:\\projetos\\Encontro\\Encontro.WebUI\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Arthur Martins\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "D:\\projetos\\Encontro\\Encontro.Application\\Encontro.Application.csproj": {
+                "projectPath": "D:\\projetos\\Encontro\\Encontro.Application\\Encontro.Application.csproj"
+              },
+              "D:\\projetos\\Encontro\\Encontro.Infrastructure\\Encontro.Infrastructure.csproj": {
+                "projectPath": "D:\\projetos\\Encontro\\Encontro.Infrastructure\\Encontro.Infrastructure.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files (x86)\\dotnet\\sdk\\8.0.416/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
