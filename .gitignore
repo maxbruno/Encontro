@@ -77,6 +77,10 @@ local.settings.json
 # Mac
 .DS_Store
 
+# Upload folder (user uploaded files)
+wwwroot/uploads/*
+!wwwroot/uploads/.gitkeep
+
 # npm
 package-lock.json
 yarn.lock

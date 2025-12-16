@@ -100,7 +100,7 @@
                                 @if (!string.IsNullOrWhiteSpace(Model.Person.PhotoUrl))
                                 {
                                     <div class="mb-2">
-                                        <img src="~/@Model.Person.PhotoUrl" alt="Foto atual" class="img-thumbnail" style="max-width: 200px; max-height: 200px;" />
+                                        <img src="@Model.Person.PhotoUrl" alt="Foto atual" class="img-thumbnail" style="max-width: 200px; max-height: 200px;" />
                                         <p class="text-muted small">Foto atual - selecione uma nova para substituir</p>
                                     </div>
                                 }

@@ -15,7 +15,7 @@
                     @if (!string.IsNullOrWhiteSpace(Model.Person.PhotoUrl))
                     {
                         <div class="text-center mb-4">
-                            <img src="~/@Model.Person.PhotoUrl" alt="Foto de @Model.Person.Name" class="img-thumbnail" style="max-width: 300px; max-height: 300px;" />
+                            <img src="@Model.Person.PhotoUrl" alt="Foto de @Model.Person.Name" class="img-thumbnail" style="max-width: 300px; max-height: 300px;" />
                         </div>
                     }
 
