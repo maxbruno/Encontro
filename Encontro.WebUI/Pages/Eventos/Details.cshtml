@@ -234,6 +234,7 @@
                                             }
                                         </a>
                                     </th>
+                                    <th style="width: 100px;">Status</th>
                                     <th style="width: 180px;">Observações</th>
                                     <th style="width: 130px;">Ações</th>
                                 </tr>
@@ -281,6 +282,26 @@
                                             </td>
                                             <td class="align-middle">@participant.RegisteredAt.ToString("dd/MM/yyyy HH:mm")</td>
                                             <td class="align-middle">
+                                                @if (participant.Indicated.HasValue)
+                                                {
+                                                    if (participant.Indicated.Value)
+                                                    {
+                                                        <span class="badge bg-primary" title="Indicado"><i class="bi bi-person-check"></i></span>
+                                                    }
+                                                }
+                                                @if (participant.Accepted.HasValue)
+                                                {
+                                                    if (participant.Accepted.Value)
+                                                    {
+                                                        <span class="badge bg-success" title="Aceitou"><i class="bi bi-check-circle-fill"></i></span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="badge bg-danger" title="Recusou"><i class="bi bi-x-circle-fill"></i></span>
+                                                    }
+                                                }
+                                            </td>
+                                            <td class="align-middle">
                                                 @if (!string.IsNullOrEmpty(participant.Notes))
                                                 {
                                                     if (participant.Notes.Length > 50)
@@ -310,7 +331,7 @@
                                 else
                                 {
                                     <tr>
-                                        <td colspan="7" class="text-center text-muted py-4">
+                                        <td colspan="8" class="text-center text-muted py-4">
                                             @if (Model.Participants.Any() && !Model.FilteredParticipants.Any())
                                             {
                                                 <text><i class="bi bi-search"></i> Nenhum participante encontrado com os filtros aplicados.</text>

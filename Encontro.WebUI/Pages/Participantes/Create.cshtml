@@ -127,6 +127,30 @@
                                 <small class="text-muted"><span id="charCount">0</span>/500 caracteres</small>
                             </div>
                         </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label asp-for="Participant.Indicated" class="form-label">
+                                    <i class="bi bi-person-check"></i> <span asp-for="Participant.Indicated"></span>
+                                </label>
+                                <select asp-for="Participant.Indicated" class="form-select">
+                                    <option value="">-- Não definido --</option>
+                                    <option value="true">Sim</option>
+                                    <option value="false">Não</option>
+                                </select>
+                                <span asp-validation-for="Participant.Indicated" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Participant.Accepted" class="form-label">
+                                    <i class="bi bi-check-circle"></i> <span asp-for="Participant.Accepted"></span>
+                                </label>
+                                <select asp-for="Participant.Accepted" class="form-select">
+                                    <option value="">-- Não definido --</option>
+                                    <option value="true">Sim</option>
+                                    <option value="false">Não</option>
+                                </select>
+                                <span asp-validation-for="Participant.Accepted" class="text-danger"></span>
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="alert alert-light mb-0">

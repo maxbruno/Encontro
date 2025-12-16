@@ -30,4 +30,10 @@ public class EventParticipant
     [MaxLength(500, ErrorMessage = "As observações devem ter no máximo 500 caracteres")]
     [Display(Name = "Observações")]
     public string? Notes { get; set; }
+
+    [Display(Name = "Indicado")]
+    public bool? Indicated { get; set; }
+
+    [Display(Name = "Aceitou")]
+    public bool? Accepted { get; set; }
 }
