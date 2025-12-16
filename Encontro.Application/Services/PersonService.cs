@@ -41,14 +41,14 @@ public class PersonService : IPersonService
 
     public async Task<Person> UpdateAsync(Person person, IFormFile? photo)
     {
-        if (!await _repository.ExistsAsync(person.Id))
+        // Check if person exists
+        var existingPerson = await _repository.GetByIdAsync(person.Id);
+        if (existingPerson == null)
         {
             throw new InvalidOperationException($"Person with ID {person.Id} not found.");
         }
 
-        // Get existing person to preserve old photo if no new one
-        var existingPerson = await _repository.GetByIdAsync(person.Id);
-        var oldPhotoUrl = existingPerson?.PhotoUrl;
+        var oldPhotoUrl = existingPerson.PhotoUrl;
 
         // Process new photo if provided
         if (photo != null && photo.Length > 0)

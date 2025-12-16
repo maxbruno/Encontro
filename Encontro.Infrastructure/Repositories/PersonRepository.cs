@@ -35,6 +35,15 @@ public class PersonRepository : IPersonRepository
 
     public async Task<Person> UpdateAsync(Person person)
     {
+        // Detach any existing tracked entity with the same ID
+        var existingEntry = _context.ChangeTracker.Entries<Person>()
+            .FirstOrDefault(e => e.Entity.Id == person.Id);
+        
+        if (existingEntry != null)
+        {
+            existingEntry.State = EntityState.Detached;
+        }
+
         _context.Attach(person).State = EntityState.Modified;
         
         try

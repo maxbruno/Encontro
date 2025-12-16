@@ -44,16 +44,32 @@ namespace Encontro.WebUI.Pages.Pessoas
         {
             if (!ModelState.IsValid)
             {
+                // Log validation errors for debugging
+                foreach (var modelState in ModelState.Values)
+                {
+                    foreach (var error in modelState.Errors)
+                    {
+                        Console.WriteLine($"Validation Error: {error.ErrorMessage}");
+                    }
+                }
                 return Page();
             }
 
             try
             {
                 await _personService.UpdateAsync(Person, Photo);
+                TempData["SuccessMessage"] = "Pessoa atualizada com sucesso!";
             }
-            catch (InvalidOperationException)
+            catch (InvalidOperationException ex)
             {
+                Console.WriteLine($"Error updating person: {ex.Message}");
                 return NotFound();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Unexpected error: {ex.Message}");
+                ModelState.AddModelError(string.Empty, $"Erro ao atualizar: {ex.Message}");
+                return Page();
             }
 
             return RedirectToPage("./Index");
