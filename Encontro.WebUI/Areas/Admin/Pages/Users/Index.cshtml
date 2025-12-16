@@ -1,0 +1,158 @@
+@page
+@model Encontro.WebUI.Areas.Admin.Pages.Users.IndexModel
+@{
+    ViewData["Title"] = "Gestão de Usuários";
+    ViewData["Breadcrumbs"] = "<li class='breadcrumb-item'><a asp-page='/Index'>Home</a></li><li class='breadcrumb-item'>Administração</li><li class='breadcrumb-item active' aria-current='page'>Usuários</li>";
+}
+
+<div class="container mt-4">
+    <!-- Mensagem de Sucesso -->
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle-fill"></i> @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <!-- Cabeçalho -->
+    <div class="row mb-3">
+        <div class="col">
+            <h1><i class="bi bi-people-fill"></i> Gestão de Usuários</h1>
+        </div>
+        <div class="col text-end">
+            <a asp-page="Register" class="btn btn-primary">
+                <i class="bi bi-person-plus-fill"></i> Novo Usuário
+            </a>
+        </div>
+    </div>
+
+    <!-- Estatísticas -->
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <div class="card text-center border-primary">
+                <div class="card-body">
+                    <h3 class="text-primary">@Model.TotalUsers</h3>
+                    <p class="mb-0 text-muted">Total de Usuários</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center border-success">
+                <div class="card-body">
+                    <h3 class="text-success">@Model.TotalAdmins</h3>
+                    <p class="mb-0 text-muted">Administradores</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center border-info">
+                <div class="card-body">
+                    <h3 class="text-info">@Model.TotalViewers</h3>
+                    <p class="mb-0 text-muted">Visualizadores</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lista de Usuários -->
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <i class="bi bi-list-ul"></i> Lista de Usuários
+        </div>
+        <div class="card-body">
+            @if (Model.Users.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead>
+                            <tr>
+                                <th><i class="bi bi-envelope-fill"></i> Email</th>
+                                <th><i class="bi bi-shield-fill"></i> Role</th>
+                                <th><i class="bi bi-check-circle-fill"></i> Email Confirmado</th>
+                                <th class="text-center"><i class="bi bi-gear-fill"></i> Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var user in Model.Users)
+                            {
+                                <tr>
+                                    <td>
+                                        <strong>@user.Email</strong>
+                                        @if (user.Email == User.Identity?.Name)
+                                        {
+                                            <span class="badge bg-info ms-2">Você</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (user.Roles.Contains("Administrador"))
+                                        {
+                                            <span class="badge bg-danger">
+                                                <i class="bi bi-shield-fill-check"></i> Administrador
+                                            </span>
+                                        }
+                                        else if (user.Roles.Contains("Visualizador"))
+                                        {
+                                            <span class="badge bg-secondary">
+                                                <i class="bi bi-eye-fill"></i> Visualizador
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-warning text-dark">Sem Role</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (user.EmailConfirmed)
+                                        {
+                                            <span class="text-success"><i class="bi bi-check-circle-fill"></i> Sim</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-danger"><i class="bi bi-x-circle-fill"></i> Não</span>
+                                        }
+                                    </td>
+                                    <td class="text-center">
+                                        @if (user.Email != User.Identity?.Name)
+                                        {
+                                            <form method="post" class="d-inline">
+                                                <input type="hidden" name="userId" value="@user.Id" />
+                                                
+                                                @if (user.Roles.Contains("Administrador"))
+                                                {
+                                                    <button type="submit" asp-page-handler="ToggleRole" 
+                                                            class="btn btn-sm btn-outline-secondary"
+                                                            title="Mudar para Visualizador">
+                                                        <i class="bi bi-arrow-down-circle"></i> Tornar Visualizador
+                                                    </button>
+                                                }
+                                                else
+                                                {
+                                                    <button type="submit" asp-page-handler="ToggleRole" 
+                                                            class="btn btn-sm btn-outline-danger"
+                                                            title="Mudar para Administrador">
+                                                        <i class="bi bi-arrow-up-circle"></i> Tornar Administrador
+                                                    </button>
+                                                }
+                                            </form>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted"><i class="bi bi-lock-fill"></i> Seu usuário</span>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info">
+                    <i class="bi bi-info-circle-fill"></i> Nenhum usuário cadastrado.
+                </div>
+            }
+        </div>
+    </div>
+</div>

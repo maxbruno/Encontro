@@ -1,0 +1,42 @@
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+<ul class="navbar-nav">
+@if (SignInManager.IsSignedIn(User))
+{
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-person-circle"></i> @User.Identity?.Name
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end">
+            <li><h6 class="dropdown-header">@User.Identity?.Name</h6></li>
+            <li><hr class="dropdown-divider"></li>
+            @if (User.IsInRole("Administrador"))
+            {
+                <li><span class="dropdown-item-text"><i class="bi bi-shield-fill-check text-danger"></i> Administrador</span></li>
+            }
+            else if (User.IsInRole("Visualizador"))
+            {
+                <li><span class="dropdown-item-text"><i class="bi bi-eye-fill text-secondary"></i> Visualizador</span></li>
+            }
+            <li><hr class="dropdown-divider"></li>
+            <li>
+                <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="/" method="post">
+                    <button type="submit" class="dropdown-item text-danger">
+                        <i class="bi bi-box-arrow-right"></i> Sair
+                    </button>
+                </form>
+            </li>
+        </ul>
+    </li>
+}
+else
+{
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">
+            <i class="bi bi-box-arrow-in-right"></i> Entrar
+        </a>
+    </li>
+}
+</ul>

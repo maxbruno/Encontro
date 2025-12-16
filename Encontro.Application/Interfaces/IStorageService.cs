@@ -1,37 +1,37 @@
 namespace Encontro.Application.Interfaces;
 
 /// <summary>
-/// Interface para serviços de armazenamento de arquivos.
-/// Permite implementações para diferentes provedores (local, S3, Azure Blob Storage, etc.)
+/// Interface for file storage services.
+/// Allows implementations for different providers (local, S3, Azure Blob Storage, etc.)
 /// </summary>
 public interface IStorageService
 {
     /// <summary>
-    /// Salva um arquivo no armazenamento
+    /// Saves a file to storage
     /// </summary>
-    /// <param name="fileName">Nome do arquivo (incluindo extensão)</param>
-    /// <param name="stream">Stream com o conteúdo do arquivo</param>
-    /// <param name="contentType">Tipo de conteúdo (MIME type)</param>
-    /// <returns>Caminho/URL relativo do arquivo salvo</returns>
+    /// <param name="fileName">File name (including extension)</param>
+    /// <param name="stream">Stream with file content</param>
+    /// <param name="contentType">Content type (MIME type)</param>
+    /// <returns>Relative path/URL of the saved file</returns>
     Task<string> SaveFileAsync(string fileName, Stream stream, string contentType);
 
     /// <summary>
-    /// Exclui um arquivo do armazenamento
+    /// Deletes a file from storage
     /// </summary>
-    /// <param name="filePath">Caminho/URL relativo do arquivo</param>
+    /// <param name="filePath">Relative path/URL of the file</param>
     Task DeleteFileAsync(string filePath);
 
     /// <summary>
-    /// Obtém a URL completa para acessar o arquivo
+    /// Gets the full URL to access the file
     /// </summary>
-    /// <param name="filePath">Caminho/URL relativo do arquivo</param>
-    /// <returns>URL completa para acessar o arquivo</returns>
+    /// <param name="filePath">Relative path/URL of the file</param>
+    /// <returns>Full URL to access the file</returns>
     string GetFileUrl(string filePath);
 
     /// <summary>
-    /// Verifica se um arquivo existe
+    /// Checks if a file exists
     /// </summary>
-    /// <param name="filePath">Caminho/URL relativo do arquivo</param>
-    /// <returns>True se o arquivo existe</returns>
+    /// <param name="filePath">Relative path/URL of the file</param>
+    /// <returns>True if the file exists</returns>
     Task<bool> FileExistsAsync(string filePath);
 }

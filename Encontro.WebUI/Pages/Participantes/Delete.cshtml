@@ -1,0 +1,103 @@
+@page "{id:int?}"
+@model Encontro.WebUI.Pages.Participantes.DeleteModel
+
+@{
+    ViewData["Title"] = "Remover Participante";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h1 class="mb-4 text-danger">
+                <i class="bi bi-exclamation-triangle"></i> Remover Participante
+            </h1>
+
+            <div class="alert alert-warning">
+                <strong>Atenção:</strong> Tem certeza de que deseja remover este participante do evento? 
+                Esta ação não pode ser desfeita.
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-3">Evento</dt>
+                        <dd class="col-sm-9">
+                            @Model.CurrentEvent.Name
+                            @if (Model.CurrentEvent.EventType == Encontro.Domain.Entities.EventType.SeguiMe)
+                            {
+                                <span class="badge bg-primary ms-2">Segue-me</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-success ms-2">ECC</span>
+                            }
+                        </dd>
+
+                        <dt class="col-sm-3">Pessoa</dt>
+                        <dd class="col-sm-9">
+                            <div class="d-flex align-items-center">
+                                @if (!string.IsNullOrEmpty(Model.CurrentPerson.PhotoUrl))
+                                {
+                                    <img src="~/@Model.CurrentPerson.PhotoUrl" alt="@Model.CurrentPerson.Name" 
+                                         class="rounded-circle me-3" style="width: 50px; height: 50px; object-fit: cover;">
+                                }
+                                else
+                                {
+                                    <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center text-white me-3" 
+                                         style="width: 50px; height: 50px;">
+                                        <i class="bi bi-person-fill"></i>
+                                    </div>
+                                }
+                                <strong>@Model.CurrentPerson.Name</strong>
+                            </div>
+                        </dd>
+
+                        <dt class="col-sm-3">Equipe</dt>
+                        <dd class="col-sm-9">
+                            @if (Model.Participant.Team != null)
+                            {
+                                <span class="badge bg-info">@Model.Participant.Team.Order - @Model.Participant.Team.Name</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">Sem Equipe</span>
+                            }
+                        </dd>
+
+                        <dt class="col-sm-3">Função</dt>
+                        <dd class="col-sm-9">
+                            @if (Model.Participant.Role != null)
+                            {
+                                <span class="badge bg-warning text-dark">@Model.Participant.Role.Order - @Model.Participant.Role.Name</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">Sem Função</span>
+                            }
+                        </dd>
+
+                        <dt class="col-sm-3">Data de Inscrição</dt>
+                        <dd class="col-sm-9">@Model.Participant.RegisteredAt.ToString("dd/MM/yyyy HH:mm")</dd>
+
+                        @if (!string.IsNullOrEmpty(Model.Participant.Notes))
+                        {
+                            <dt class="col-sm-3">Observações</dt>
+                            <dd class="col-sm-9">@Model.Participant.Notes</dd>
+                        }
+                    </dl>
+
+                    <form method="post">
+                        <div class="mt-4">
+                            <button type="submit" class="btn btn-danger">
+                                <i class="bi bi-trash"></i> Confirmar Exclusão
+                            </button>
+                            <a asp-page="/Eventos/Details" asp-route-id="@Model.Participant.EventId" class="btn btn-secondary">
+                                <i class="bi bi-x-circle"></i> Cancelar
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

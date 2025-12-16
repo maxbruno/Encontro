@@ -14,93 +14,93 @@
                 <div class="card-body">
                     <form method="post" enctype="multipart/form-data">
                         <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
-                        <input type="hidden" asp-for="Pessoa.Id" />
+                        <input type="hidden" asp-for="Person.Id" />
 
                         <div class="row mb-3">
                             <div class="col-md-8">
-                                <label asp-for="Pessoa.Name" class="form-label"></label>
-                                <input asp-for="Pessoa.Name" class="form-control" />
-                                <span asp-validation-for="Pessoa.Name" class="text-danger"></span>
+                                <label asp-for="Person.Name" class="form-label"></label>
+                                <input asp-for="Person.Name" class="form-control" />
+                                <span asp-validation-for="Person.Name" class="text-danger"></span>
                             </div>
                             <div class="col-md-4">
-                                <label asp-for="Pessoa.Type" class="form-label"></label>
-                                <input asp-for="Pessoa.Type" class="form-control" />
-                                <span asp-validation-for="Pessoa.Type" class="text-danger"></span>
+                                <label asp-for="Person.Type" class="form-label"></label>
+                                <input asp-for="Person.Type" class="form-control" />
+                                <span asp-validation-for="Person.Type" class="text-danger"></span>
                             </div>
                         </div>
 
                         <div class="row mb-3">
                             <div class="col-md-4">
-                                <label asp-for="Pessoa.BirthDate" class="form-label"></label>
-                                <input asp-for="Pessoa.BirthDate" class="form-control" type="date" />
-                                <span asp-validation-for="Pessoa.BirthDate" class="text-danger"></span>
+                                <label asp-for="Person.BirthDate" class="form-label"></label>
+                                <input asp-for="Person.BirthDate" class="form-control" type="date" />
+                                <span asp-validation-for="Person.BirthDate" class="text-danger"></span>
                             </div>
                             <div class="col-md-4">
-                                <label asp-for="Pessoa.CellPhone" class="form-label"></label>
-                                <input asp-for="Pessoa.CellPhone" class="form-control" />
-                                <span asp-validation-for="Pessoa.CellPhone" class="text-danger"></span>
+                                <label asp-for="Person.CellPhone" class="form-label"></label>
+                                <input asp-for="Person.CellPhone" class="form-control" />
+                                <span asp-validation-for="Person.CellPhone" class="text-danger"></span>
                             </div>
                             <div class="col-md-4">
-                                <label asp-for="Pessoa.Phone" class="form-label"></label>
-                                <input asp-for="Pessoa.Phone" class="form-control" />
-                                <span asp-validation-for="Pessoa.Phone" class="text-danger"></span>
+                                <label asp-for="Person.Phone" class="form-label"></label>
+                                <input asp-for="Person.Phone" class="form-control" />
+                                <span asp-validation-for="Person.Phone" class="text-danger"></span>
                             </div>
                         </div>
 
                         <div class="row mb-3">
                             <div class="col-md-12">
-                                <label asp-for="Pessoa.Email" class="form-label"></label>
-                                <input asp-for="Pessoa.Email" class="form-control" type="email" />
-                                <span asp-validation-for="Pessoa.Email" class="text-danger"></span>
+                                <label asp-for="Person.Email" class="form-label"></label>
+                                <input asp-for="Person.Email" class="form-control" type="email" />
+                                <span asp-validation-for="Person.Email" class="text-danger"></span>
                             </div>
                         </div>
 
                         <div class="row mb-3">
                             <div class="col-md-8">
-                                <label asp-for="Pessoa.Address" class="form-label"></label>
-                                <input asp-for="Pessoa.Address" class="form-control" />
-                                <span asp-validation-for="Pessoa.Address" class="text-danger"></span>
+                                <label asp-for="Person.Address" class="form-label"></label>
+                                <input asp-for="Person.Address" class="form-control" />
+                                <span asp-validation-for="Person.Address" class="text-danger"></span>
                             </div>
                             <div class="col-md-4">
-                                <label asp-for="Pessoa.District" class="form-label"></label>
-                                <input asp-for="Pessoa.District" class="form-control" />
-                                <span asp-validation-for="Pessoa.District" class="text-danger"></span>
+                                <label asp-for="Person.District" class="form-label"></label>
+                                <input asp-for="Person.District" class="form-control" />
+                                <span asp-validation-for="Person.District" class="text-danger"></span>
                             </div>
                         </div>
 
                         <div class="row mb-3">
                             <div class="col-md-4">
-                                <label asp-for="Pessoa.ZipCode" class="form-label"></label>
-                                <input asp-for="Pessoa.ZipCode" class="form-control" />
-                                <span asp-validation-for="Pessoa.ZipCode" class="text-danger"></span>
+                                <label asp-for="Person.ZipCode" class="form-label"></label>
+                                <input asp-for="Person.ZipCode" class="form-control" />
+                                <span asp-validation-for="Person.ZipCode" class="text-danger"></span>
                             </div>
                             <div class="col-md-8">
-                                <label asp-for="Pessoa.Group" class="form-label"></label>
-                                <input asp-for="Pessoa.Group" class="form-control" />
-                                <span asp-validation-for="Pessoa.Group" class="text-danger"></span>
+                                <label asp-for="Person.Group" class="form-label"></label>
+                                <input asp-for="Person.Group" class="form-control" />
+                                <span asp-validation-for="Person.Group" class="text-danger"></span>
                             </div>
                         </div>
 
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label asp-for="Pessoa.FatherName" class="form-label"></label>
-                                <input asp-for="Pessoa.FatherName" class="form-control" />
-                                <span asp-validation-for="Pessoa.FatherName" class="text-danger"></span>
+                                <label asp-for="Person.FatherName" class="form-label"></label>
+                                <input asp-for="Person.FatherName" class="form-control" />
+                                <span asp-validation-for="Person.FatherName" class="text-danger"></span>
                             </div>
                             <div class="col-md-6">
-                                <label asp-for="Pessoa.MotherName" class="form-label"></label>
-                                <input asp-for="Pessoa.MotherName" class="form-control" />
-                                <span asp-validation-for="Pessoa.MotherName" class="text-danger"></span>
+                                <label asp-for="Person.MotherName" class="form-label"></label>
+                                <input asp-for="Person.MotherName" class="form-control" />
+                                <span asp-validation-for="Person.MotherName" class="text-danger"></span>
                             </div>
                         </div>
 
                         <div class="row mb-3">
                             <div class="col-md-12">
                                 <label asp-for="Photo" class="form-label">Foto</label>
-                                @if (!string.IsNullOrWhiteSpace(Model.Pessoa.PhotoUrl))
+                                @if (!string.IsNullOrWhiteSpace(Model.Person.PhotoUrl))
                                 {
                                     <div class="mb-2">
-                                        <img src="~/@Model.Pessoa.PhotoUrl" alt="Foto atual" class="img-thumbnail" style="max-width: 200px; max-height: 200px;" />
+                                        <img src="~/@Model.Person.PhotoUrl" alt="Foto atual" class="img-thumbnail" style="max-width: 200px; max-height: 200px;" />
                                         <p class="text-muted small">Foto atual - selecione uma nova para substituir</p>
                                     </div>
                                 }
@@ -112,9 +112,9 @@
 
                         <div class="row mb-3">
                             <div class="col-md-12">
-                                <label asp-for="Pessoa.Notes" class="form-label"></label>
-                                <textarea asp-for="Pessoa.Notes" class="form-control" rows="3"></textarea>
-                                <span asp-validation-for="Pessoa.Notes" class="text-danger"></span>
+                                <label asp-for="Person.Notes" class="form-label"></label>
+                                <textarea asp-for="Person.Notes" class="form-control" rows="3"></textarea>
+                                <span asp-validation-for="Person.Notes" class="text-danger"></span>
                             </div>
                         </div>
 

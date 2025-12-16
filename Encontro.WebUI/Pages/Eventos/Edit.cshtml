@@ -1,0 +1,50 @@
+﻿@page
+@model Encontro.WebUI.Pages.Eventos.EditModel
+
+@{
+    ViewData["Title"] = "Editar Evento";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h1 class="mb-4">Editar Evento</h1>
+
+            <div class="card">
+                <div class="card-body">
+                    <form method="post">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+                        <input type="hidden" asp-for="Event.Id" />
+                        <input type="hidden" asp-for="Event.CreatedAt" />
+
+                        <div class="mb-3">
+                            <label asp-for="Event.Name" class="form-label"></label>
+                            <input asp-for="Event.Name" class="form-control" />
+                            <span asp-validation-for="Event.Name" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Event.EventType" class="form-label"></label>
+                            <select asp-for="Event.EventType" asp-items="Html.GetEnumSelectList<Encontro.Domain.Entities.EventType>()" class="form-select">
+                            </select>
+                            <span asp-validation-for="Event.EventType" class="text-danger"></span>
+                        </div>
+
+                        <div class="mt-4">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-circle"></i> Salvar Alterações
+                            </button>
+                            <a asp-page="Index" class="btn btn-secondary">
+                                <i class="bi bi-arrow-left"></i> Voltar
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

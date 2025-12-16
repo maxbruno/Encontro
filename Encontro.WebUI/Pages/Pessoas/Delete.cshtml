@@ -19,38 +19,38 @@
 
             <div class="card">
                 <div class="card-body">
-                    @if (!string.IsNullOrWhiteSpace(Model.Pessoa.PhotoUrl))
+                    @if (!string.IsNullOrWhiteSpace(Model.Person.PhotoUrl))
                     {
                         <div class="text-center mb-4">
-                            <img src="~/@Model.Pessoa.PhotoUrl" alt="Foto de @Model.Pessoa.Name" class="img-thumbnail" style="max-width: 200px; max-height: 200px;" />
+                            <img src="~/@Model.Person.PhotoUrl" alt="Foto de @Model.Person.Name" class="img-thumbnail" style="max-width: 200px; max-height: 200px;" />
                         </div>
                     }
 
                     <dl class="row">
-                        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Pessoa.Name)</dt>
-                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Pessoa.Name)</dd>
+                        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Person.Name)</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Person.Name)</dd>
 
-                        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Pessoa.Type)</dt>
-                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Pessoa.Type)</dd>
+                        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Person.Type)</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Person.Type)</dd>
 
-                        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Pessoa.BirthDate)</dt>
-                        <dd class="col-sm-9">@(Model.Pessoa.BirthDate?.ToString("dd/MM/yyyy") ?? "-")</dd>
+                        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Person.BirthDate)</dt>
+                        <dd class="col-sm-9">@(Model.Person.BirthDate?.ToString("dd/MM/yyyy") ?? "-")</dd>
 
-                        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Pessoa.CellPhone)</dt>
-                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Pessoa.CellPhone)</dd>
+                        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Person.CellPhone)</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Person.CellPhone)</dd>
 
-                        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Pessoa.Phone)</dt>
-                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Pessoa.Phone)</dd>
+                        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Person.Phone)</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Person.Phone)</dd>
 
-                        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Pessoa.Email)</dt>
-                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Pessoa.Email)</dd>
+                        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Person.Email)</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Person.Email)</dd>
 
-                        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Pessoa.Group)</dt>
-                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Pessoa.Group)</dd>
+                        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Person.Group)</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Person.Group)</dd>
                     </dl>
 
                     <form method="post">
-                        <input type="hidden" asp-for="Pessoa.Id" />
+                        <input type="hidden" asp-for="Person.Id" />
                         <div class="mt-4">
                             <button type="submit" class="btn btn-danger">
                                 <i class="bi bi-trash"></i> Confirmar Exclusão

@@ -11,4 +11,5 @@ public interface IPersonService
     Task<Person> UpdateAsync(Person person, IFormFile? photo);
     Task<bool> DeleteAsync(int id);
     Task<bool> ExistsAsync(int id);
+    Task<IEnumerable<Person>> SearchAsync(string searchTerm);
 }

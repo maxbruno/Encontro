@@ -1,0 +1,154 @@
+﻿@page
+@model Encontro.WebUI.Pages.Eventos.CreateModel
+
+@{
+    ViewData["Title"] = "Novo Evento";
+    ViewData["Breadcrumbs"] = "<li class='breadcrumb-item'><a asp-page='/Index'>Home</a></li><li class='breadcrumb-item'><a asp-page='/Eventos/Index'>Eventos</a></li><li class='breadcrumb-item active' aria-current='page'>Novo Evento</li>";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <!-- Mensagem de Sucesso -->
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="bi bi-check-circle-fill"></i> @TempData["SuccessMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+
+            <!-- Cabeçalho -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1><i class="bi bi-calendar-plus-fill"></i> Novo Evento</h1>
+                <a asp-page="Index" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-left"></i> Voltar à Lista
+                </a>
+            </div>
+
+            <form method="post" id="eventForm">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                <!-- Card: Informações do Evento -->
+                <div class="card mb-3">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0"><i class="bi bi-info-circle"></i> Informações do Evento</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <label asp-for="Event.Name" class="form-label">
+                                    <i class="bi bi-card-text"></i> <span asp-for="Event.Name"></span> <span class="text-danger">*</span>
+                                </label>
+                                <input asp-for="Event.Name" class="form-control" required maxlength="100" placeholder="Ex: Encontro de Casais 2025" title="O nome do evento é obrigatório" oninvalid="this.setCustomValidity('O nome do evento é obrigatório')" oninput="this.setCustomValidity('')" autofocus id="eventName" />
+                                <span asp-validation-for="Event.Name" class="text-danger"></span>
+                                <small class="text-muted"><span id="charCount">0</span>/100 caracteres</small>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label asp-for="Event.EventType" class="form-label">
+                                    <i class="bi bi-tag-fill"></i> <span asp-for="Event.EventType"></span> <span class="text-danger">*</span>
+                                </label>
+                                <select asp-for="Event.EventType" asp-items="Html.GetEnumSelectList<Encontro.Domain.Entities.EventType>()" class="form-select" required title="O tipo de evento é obrigatório" oninvalid="this.setCustomValidity('O tipo de evento é obrigatório')" oninput="this.setCustomValidity('')" id="eventType">
+                                    <option value="">-- Selecione o tipo --</option>
+                                </select>
+                                <span asp-validation-for="Event.EventType" class="text-danger"></span>
+                                <div id="typePreview" class="mt-2" style="display: none;">
+                                    <small class="text-muted">Preview: </small>
+                                    <span id="previewBadge"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card: Botões de Ação -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <button type="submit" name="action" value="save" class="btn btn-primary btn-lg">
+                                    <i class="bi bi-check-circle"></i> Salvar e Voltar
+                                </button>
+                                <button type="submit" name="action" value="saveAndViewDetails" class="btn btn-success btn-lg">
+                                    <i class="bi bi-arrow-right-circle"></i> Salvar e Ir para Evento
+                                </button>
+                            </div>
+                            <div>
+                                <a asp-page="Index" class="btn btn-secondary btn-lg">
+                                    <i class="bi bi-x-circle"></i> Cancelar
+                                </a>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <small class="text-muted"><span class="text-danger">*</span> Campos obrigatórios</small>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <script>
+        // Character counter for event name
+        const eventName = document.getElementById('eventName');
+        const charCount = document.getElementById('charCount');
+        
+        if (eventName && charCount) {
+            eventName.addEventListener('input', function() {
+                charCount.textContent = this.value.length;
+            });
+            
+            // Initialize counter
+            charCount.textContent = eventName.value.length;
+        }
+
+        // Event type preview
+        const eventType = document.getElementById('eventType');
+        const typePreview = document.getElementById('typePreview');
+        const previewBadge = document.getElementById('previewBadge');
+        
+        if (eventType && typePreview && previewBadge) {
+            eventType.addEventListener('change', function() {
+                if (this.value === '1') {
+                    previewBadge.className = 'badge bg-primary';
+                    previewBadge.textContent = 'Segue-me';
+                    typePreview.style.display = 'block';
+                } else if (this.value === '2') {
+                    previewBadge.className = 'badge bg-success';
+                    previewBadge.textContent = 'ECC';
+                    typePreview.style.display = 'block';
+                } else {
+                    typePreview.style.display = 'none';
+                }
+            });
+        }
+
+        // Form change detection for unsaved warning
+        let formChanged = false;
+        const formInputs = document.querySelectorAll('#eventForm input, #eventForm select');
+        formInputs.forEach(input => {
+            input.addEventListener('change', () => {
+                formChanged = true;
+            });
+        });
+
+        // Warn before leaving with unsaved changes
+        window.addEventListener('beforeunload', (e) => {
+            if (formChanged) {
+                e.preventDefault();
+                e.returnValue = '';
+            }
+        });
+
+        // Don't warn when form is submitted
+        document.getElementById('eventForm').addEventListener('submit', () => {
+            formChanged = false;
+        });
+    </script>
+}

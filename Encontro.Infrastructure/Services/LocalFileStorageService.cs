@@ -3,7 +3,7 @@ using Encontro.Application.Interfaces;
 namespace Encontro.Infrastructure.Services;
 
 /// <summary>
-/// Implementação de armazenamento local em sistema de arquivos
+/// Local file system storage implementation
 /// </summary>
 public class LocalFileStorageService : IStorageService
 {
@@ -19,18 +19,18 @@ public class LocalFileStorageService : IStorageService
     {
         var uploadPath = Path.Combine(_webRootPath, UploadFolder);
         
-        // Criar diretório se não existir
+        // Create directory if it doesn't exist
         if (!Directory.Exists(uploadPath))
             Directory.CreateDirectory(uploadPath);
 
-        var caminhoCompleto = Path.Combine(uploadPath, fileName);
+        var fullPath = Path.Combine(uploadPath, fileName);
 
-        // Salvar o arquivo
-        using var fileStream = new FileStream(caminhoCompleto, FileMode.Create, FileAccess.Write);
+        // Save the file
+        using var fileStream = new FileStream(fullPath, FileMode.Create, FileAccess.Write);
         await stream.CopyToAsync(fileStream);
 
-        // Retornar caminho relativo
-        return $"{UploadFolder}/{fileName}";
+        // Return relative path with leading slash for web URLs
+        return $"/{UploadFolder}/{fileName}";
     }
 
     public Task DeleteFileAsync(string filePath)
@@ -40,14 +40,14 @@ public class LocalFileStorageService : IStorageService
 
         try
         {
-            var caminhoCompleto = Path.Combine(_webRootPath, filePath);
+            var fullPath = Path.Combine(_webRootPath, filePath);
             
-            if (File.Exists(caminhoCompleto))
-                File.Delete(caminhoCompleto);
+            if (File.Exists(fullPath))
+                File.Delete(fullPath);
         }
         catch
         {
-            // Ignorar erros ao excluir arquivo
+            // Ignore errors when deleting file
         }
 
         return Task.CompletedTask;
@@ -55,8 +55,8 @@ public class LocalFileStorageService : IStorageService
 
     public string GetFileUrl(string filePath)
     {
-        // Para armazenamento local, retorna o caminho relativo
-        // que será servido como arquivo estático pelo ASP.NET Core
+        // For local storage, returns the relative path
+        // that will be served as a static file by ASP.NET Core
         return $"/{filePath}";
     }
 
@@ -65,7 +65,7 @@ public class LocalFileStorageService : IStorageService
         if (string.IsNullOrWhiteSpace(filePath))
             return Task.FromResult(false);
 
-        var caminhoCompleto = Path.Combine(_webRootPath, filePath);
-        return Task.FromResult(File.Exists(caminhoCompleto));
+        var fullPath = Path.Combine(_webRootPath, filePath);
+        return Task.FromResult(File.Exists(fullPath));
     }
 }

@@ -1,0 +1,345 @@
+﻿@page
+@model Encontro.WebUI.Pages.Eventos.DetailsModel
+
+@{
+    ViewData["Title"] = "Detalhes do Evento";
+    ViewData["Breadcrumbs"] = $"<li class='breadcrumb-item'><a asp-page='/Index'>Home</a></li><li class='breadcrumb-item'><a asp-page='/Eventos/Index'>Eventos</a></li><li class='breadcrumb-item active' aria-current='page'>{Model.Event.Name}</li>";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- Mensagem de Sucesso -->
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="bi bi-check-circle-fill"></i> @TempData["SuccessMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+
+            <!-- Card de Detalhes do Evento -->
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0">
+                            <i class="bi bi-calendar-event-fill"></i> @Model.Event.Name
+                        </h4>
+                        <div>
+                            @if (Model.Event.EventType == Encontro.Domain.Entities.EventType.SeguiMe)
+                            {
+                                <span class="badge bg-light text-primary fs-6">Segue-me</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-light text-success fs-6">ECC</span>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p class="mb-2">
+                                <i class="bi bi-calendar-plus text-muted"></i>
+                                <strong>Criado em:</strong> @Model.Event.CreatedAt.ToString("dd/MM/yyyy HH:mm")
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="mb-2">
+                                <i class="bi bi-people-fill text-muted"></i>
+                                <strong>Participantes:</strong> 
+                                <span class="badge bg-info">@Model.TotalParticipants</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        @if (User.IsInRole("Administrador"))
+                        {
+                            <a asp-page="Edit" asp-route-id="@Model.Event.Id" class="btn btn-warning">
+                                <i class="bi bi-pencil"></i> Editar Evento
+                            </a>
+                        }
+                        <a asp-page="Index" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left"></i> Voltar à Lista
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cards de Estatísticas -->
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="card text-center border-primary">
+                        <div class="card-body">
+                            <h3 class="text-primary">@Model.TotalParticipants</h3>
+                            <p class="mb-0 text-muted">Total de Participantes</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-center border-success">
+                        <div class="card-body">
+                            <h3 class="text-success">@Model.ParticipantsWithTeam</h3>
+                            <p class="mb-0 text-muted">Com Equipe</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-center border-warning">
+                        <div class="card-body">
+                            <h3 class="text-warning">@Model.ParticipantsWithRole</h3>
+                            <p class="mb-0 text-muted">Com Função</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-center border-info">
+                        <div class="card-body">
+                            <h3 class="text-info">@Model.TeamsCount</h3>
+                            <p class="mb-0 text-muted">Equipes Ativas</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Seção de Participantes -->
+            <div class="card">
+                <div class="card-header bg-light">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">
+                            <i class="bi bi-people-fill"></i> Participantes
+                            <span class="badge bg-secondary ms-2">Mostrando @Model.FilteredParticipants.Count de @Model.Participants.Count</span>
+                        </h5>
+                        @if (User.IsInRole("Administrador"))
+                        {
+                            <a asp-page="/Participantes/Create" asp-route-eventId="@Model.Event.Id" class="btn btn-primary btn-sm">
+                                <i class="bi bi-plus-circle"></i> Adicionar Participante
+                            </a>
+                        }
+                    </div>
+                </div>
+                <div class="card-body">
+                    <!-- Filtros -->
+                    <div class="card mb-3">
+                        <div class="card-header bg-light">
+                            <h6 class="mb-0"><i class="bi bi-funnel"></i> Filtros e Busca</h6>
+                        </div>
+                        <div class="card-body">
+                            <form method="get" class="row g-3">
+                                <input type="hidden" name="id" value="@Model.Event.Id" />
+                                
+                                <div class="col-md-4">
+                                    <label for="searchTerm" class="form-label">Buscar por Nome</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-search"></i></span>
+                                        <input type="text" class="form-control" id="searchTerm" name="searchTerm" 
+                                               value="@Model.SearchTerm" placeholder="Digite o nome...">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <label for="selectedTeamId" class="form-label">Filtrar por Equipe</label>
+                                    <select class="form-select" id="selectedTeamId" name="selectedTeamId" asp-items="Model.TeamsSelectList">
+                                    </select>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <label for="selectedRoleId" class="form-label">Filtrar por Função</label>
+                                    <select class="form-select" id="selectedRoleId" name="selectedRoleId" asp-items="Model.RolesSelectList">
+                                    </select>
+                                </div>
+
+                                <div class="col-md-2 d-flex align-items-end">
+                                    <div class="d-grid gap-2 w-100">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="bi bi-search"></i> Buscar
+                                        </button>
+                                        <a asp-page="/Eventos/Details" asp-route-id="@Model.Event.Id" class="btn btn-secondary">
+                                            <i class="bi bi-x-circle"></i> Limpar
+                                        </a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Tabela de Participantes -->
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th style="width: 80px;">Foto</th>
+                                    <th>
+                                        <a asp-page="Details"
+                                           asp-route-id="@Model.Event.Id"
+                                           asp-route-SearchTerm="@Model.SearchTerm"
+                                           asp-route-SelectedTeamId="@Model.SelectedTeamId"
+                                           asp-route-SelectedRoleId="@Model.SelectedRoleId"
+                                           asp-route-SortBy="name"
+                                           asp-route-SortOrder="@(Model.SortBy == "name" && Model.SortOrder == "asc" ? "desc" : "asc")"
+                                           class="text-white text-decoration-none">
+                                            Nome
+                                            @if (Model.SortBy == "name")
+                                            {
+                                                <i class="bi bi-arrow-@(Model.SortOrder == "asc" ? "up" : "down")"></i>
+                                            }
+                                        </a>
+                                    </th>
+                                    <th style="width: 150px;">
+                                        <a asp-page="Details"
+                                           asp-route-id="@Model.Event.Id"
+                                           asp-route-SearchTerm="@Model.SearchTerm"
+                                           asp-route-SelectedTeamId="@Model.SelectedTeamId"
+                                           asp-route-SelectedRoleId="@Model.SelectedRoleId"
+                                           asp-route-SortBy="team"
+                                           asp-route-SortOrder="@(Model.SortBy == "team" && Model.SortOrder == "asc" ? "desc" : "asc")"
+                                           class="text-white text-decoration-none">
+                                            Equipe
+                                            @if (Model.SortBy == "team")
+                                            {
+                                                <i class="bi bi-arrow-@(Model.SortOrder == "asc" ? "up" : "down")"></i>
+                                            }
+                                        </a>
+                                    </th>
+                                    <th style="width: 180px;">
+                                        <a asp-page="Details"
+                                           asp-route-id="@Model.Event.Id"
+                                           asp-route-SearchTerm="@Model.SearchTerm"
+                                           asp-route-SelectedTeamId="@Model.SelectedTeamId"
+                                           asp-route-SelectedRoleId="@Model.SelectedRoleId"
+                                           asp-route-SortBy="role"
+                                           asp-route-SortOrder="@(Model.SortBy == "role" && Model.SortOrder == "asc" ? "desc" : "asc")"
+                                           class="text-white text-decoration-none">
+                                            Função
+                                            @if (Model.SortBy == "role")
+                                            {
+                                                <i class="bi bi-arrow-@(Model.SortOrder == "asc" ? "up" : "down")"></i>
+                                            }
+                                        </a>
+                                    </th>
+                                    <th style="width: 140px;">
+                                        <a asp-page="Details"
+                                           asp-route-id="@Model.Event.Id"
+                                           asp-route-SearchTerm="@Model.SearchTerm"
+                                           asp-route-SelectedTeamId="@Model.SelectedTeamId"
+                                           asp-route-SelectedRoleId="@Model.SelectedRoleId"
+                                           asp-route-SortBy="date"
+                                           asp-route-SortOrder="@(Model.SortBy == "date" && Model.SortOrder == "asc" ? "desc" : "asc")"
+                                           class="text-white text-decoration-none">
+                                            Data Inscrição
+                                            @if (Model.SortBy == "date")
+                                            {
+                                                <i class="bi bi-arrow-@(Model.SortOrder == "asc" ? "up" : "down")"></i>
+                                            }
+                                        </a>
+                                    </th>
+                                    <th style="width: 180px;">Observações</th>
+                                    <th style="width: 130px;">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.FilteredParticipants.Any())
+                                {
+                                    @foreach (var participant in Model.FilteredParticipants)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @if (!string.IsNullOrEmpty(participant.Person.PhotoUrl))
+                                                {
+                                                    <img src="~/@participant.Person.PhotoUrl" alt="@participant.Person.Name" 
+                                                         class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">
+                                                }
+                                                else
+                                                {
+                                                    <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center text-white" 
+                                                         style="width: 50px; height: 50px;">
+                                                        <i class="bi bi-person-fill"></i>
+                                                    </div>
+                                                }
+                                            </td>
+                                            <td class="align-middle">@participant.Person.Name</td>
+                                            <td class="align-middle">
+                                                @if (participant.Team != null)
+                                                {
+                                                    <span class="badge bg-info">@participant.Team.Order - @participant.Team.Name</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-secondary">Sem Equipe</span>
+                                                }
+                                            </td>
+                                            <td class="align-middle">
+                                                @if (participant.Role != null)
+                                                {
+                                                    <span class="badge bg-warning text-dark">@participant.Role.Order - @participant.Role.Name</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-secondary">Sem Função</span>
+                                                }
+                                            </td>
+                                            <td class="align-middle">@participant.RegisteredAt.ToString("dd/MM/yyyy HH:mm")</td>
+                                            <td class="align-middle">
+                                                @if (!string.IsNullOrEmpty(participant.Notes))
+                                                {
+                                                    if (participant.Notes.Length > 50)
+                                                    {
+                                                        <span title="@participant.Notes">@participant.Notes.Substring(0, 50)...</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        @participant.Notes
+                                                    }
+                                                }
+                                            </td>
+                                            <td class="align-middle">
+                                                @if (User.IsInRole("Administrador"))
+                                                {
+                                                    <a asp-page="/Participantes/Edit" asp-route-id="@participant.Id" class="btn btn-warning btn-sm">
+                                                        <i class="bi bi-pencil"></i>
+                                                    </a>
+                                                    <a asp-page="/Participantes/Delete" asp-route-id="@participant.Id" class="btn btn-danger btn-sm">
+                                                        <i class="bi bi-trash"></i>
+                                                    </a>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="7" class="text-center text-muted py-4">
+                                            @if (Model.Participants.Any() && !Model.FilteredParticipants.Any())
+                                            {
+                                                <text><i class="bi bi-search"></i> Nenhum participante encontrado com os filtros aplicados.</text>
+                                            }
+                                            else
+                                            {
+                                                <text><i class="bi bi-people"></i> Nenhum participante inscrito neste evento.</text>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Auto-hide success message after 5 seconds
+        setTimeout(function() {
+            var alert = document.querySelector('.alert-success');
+            if (alert) {
+                var bsAlert = new bootstrap.Alert(alert);
+                bsAlert.close();
+            }
+        }, 5000);
+    </script>
+}

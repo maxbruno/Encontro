@@ -1,0 +1,109 @@
+@page "{id:int?}"
+@model Encontro.WebUI.Pages.Participantes.EditModel
+
+@{
+    ViewData["Title"] = "Editar Participante";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h1 class="mb-4">Editar Participante</h1>
+
+            <div class="alert alert-info">
+                <i class="bi bi-info-circle"></i>
+                <strong>Evento:</strong> @Model.CurrentEvent.Name
+                @if (Model.CurrentEvent.EventType == Encontro.Domain.Entities.EventType.SeguiMe)
+                {
+                    <span class="badge bg-primary ms-2">Segue-me</span>
+                }
+                else
+                {
+                    <span class="badge bg-success ms-2">ECC</span>
+                }
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <form method="post">
+                        <input type="hidden" asp-for="Participant.Id" />
+                        <input type="hidden" asp-for="Participant.EventId" />
+                        <input type="hidden" asp-for="Participant.PersonId" />
+                        <input type="hidden" asp-for="Participant.RegisteredAt" />
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <label class="form-label">Pessoa</label>
+                                <div class="d-flex align-items-center">
+                                    @if (!string.IsNullOrEmpty(Model.CurrentPerson.PhotoUrl))
+                                    {
+                                        <img src="~/@Model.CurrentPerson.PhotoUrl" alt="@Model.CurrentPerson.Name" 
+                                             class="rounded-circle me-3" style="width: 50px; height: 50px; object-fit: cover;">
+                                    }
+                                    else
+                                    {
+                                        <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center text-white me-3" 
+                                             style="width: 50px; height: 50px;">
+                                            <i class="bi bi-person-fill"></i>
+                                        </div>
+                                    }
+                                    <strong>@Model.CurrentPerson.Name</strong>
+                                </div>
+                                <small class="form-text text-muted">A pessoa não pode ser alterada após a inscrição.</small>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <label class="form-label">Data de Inscrição</label>
+                                <input type="text" class="form-control" 
+                                       value="@Model.Participant.RegisteredAt.ToString("dd/MM/yyyy HH:mm")" readonly>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <label asp-for="Participant.TeamId" class="form-label">Equipe</label>
+                                <select asp-for="Participant.TeamId" class="form-select" asp-items="Model.TeamsSelectList">
+                                </select>
+                                <span asp-validation-for="Participant.TeamId" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <label asp-for="Participant.RoleId" class="form-label">Função</label>
+                                <select asp-for="Participant.RoleId" class="form-select" asp-items="Model.RolesSelectList">
+                                </select>
+                                <span asp-validation-for="Participant.RoleId" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <label asp-for="Participant.Notes" class="form-label">Observações</label>
+                                <textarea asp-for="Participant.Notes" class="form-control" rows="3" 
+                                          placeholder="Observações adicionais sobre a participação..."></textarea>
+                                <span asp-validation-for="Participant.Notes" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-circle"></i> Salvar Alterações
+                            </button>
+                            <a asp-page="/Eventos/Details" asp-route-id="@Model.Participant.EventId" class="btn btn-secondary">
+                                <i class="bi bi-x-circle"></i> Cancelar
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

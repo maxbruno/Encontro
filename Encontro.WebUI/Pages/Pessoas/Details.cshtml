@@ -12,55 +12,55 @@
 
             <div class="card">
                 <div class="card-body">
-                    @if (!string.IsNullOrWhiteSpace(Model.Pessoa.PhotoUrl))
+                    @if (!string.IsNullOrWhiteSpace(Model.Person.PhotoUrl))
                     {
                         <div class="text-center mb-4">
-                            <img src="~/@Model.Pessoa.PhotoUrl" alt="Foto de @Model.Pessoa.Name" class="img-thumbnail" style="max-width: 300px; max-height: 300px;" />
+                            <img src="~/@Model.Person.PhotoUrl" alt="Foto de @Model.Person.Name" class="img-thumbnail" style="max-width: 300px; max-height: 300px;" />
                         </div>
                     }
 
                     <dl class="row">
-                        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Pessoa.Name)</dt>
-                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Pessoa.Name)</dd>
+                        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Person.Name)</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Person.Name)</dd>
 
-                        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Pessoa.Type)</dt>
-                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Pessoa.Type)</dd>
+                        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Person.Type)</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Person.Type)</dd>
 
-                        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Pessoa.BirthDate)</dt>
-                        <dd class="col-sm-9">@(Model.Pessoa.BirthDate?.ToString("dd/MM/yyyy") ?? "-")</dd>
+                        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Person.BirthDate)</dt>
+                        <dd class="col-sm-9">@(Model.Person.BirthDate?.ToString("dd/MM/yyyy") ?? "-")</dd>
 
-                        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Pessoa.CellPhone)</dt>
-                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Pessoa.CellPhone)</dd>
+                        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Person.CellPhone)</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Person.CellPhone)</dd>
 
-                        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Pessoa.Phone)</dt>
-                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Pessoa.Phone)</dd>
+                        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Person.Phone)</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Person.Phone)</dd>
 
-                        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Pessoa.Email)</dt>
-                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Pessoa.Email)</dd>
+                        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Person.Email)</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Person.Email)</dd>
 
-                        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Pessoa.Address)</dt>
-                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Pessoa.Address)</dd>
+                        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Person.Address)</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Person.Address)</dd>
 
-                        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Pessoa.District)</dt>
-                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Pessoa.District)</dd>
+                        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Person.District)</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Person.District)</dd>
 
-                        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Pessoa.ZipCode)</dt>
-                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Pessoa.ZipCode)</dd>
+                        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Person.ZipCode)</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Person.ZipCode)</dd>
 
-                        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Pessoa.Group)</dt>
-                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Pessoa.Group)</dd>
+                        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Person.Group)</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Person.Group)</dd>
 
-                        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Pessoa.FatherName)</dt>
-                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Pessoa.FatherName)</dd>
+                        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Person.FatherName)</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Person.FatherName)</dd>
 
-                        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Pessoa.MotherName)</dt>
-                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Pessoa.MotherName)</dd>
+                        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Person.MotherName)</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Person.MotherName)</dd>
 
-                        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Pessoa.Notes)</dt>
+                        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Person.Notes)</dt>
                         <dd class="col-sm-9">
-                            @if (!string.IsNullOrEmpty(Model.Pessoa.Notes))
+                            @if (!string.IsNullOrEmpty(Model.Person.Notes))
                             {
-                                <pre class="mb-0">@Model.Pessoa.Notes</pre>
+                                <pre class="mb-0">@Model.Person.Notes</pre>
                             }
                             else
                             {
@@ -70,7 +70,7 @@
                     </dl>
 
                     <div class="mt-4">
-                        <a asp-page="Edit" asp-route-id="@Model.Pessoa.Id" class="btn btn-warning">
+                        <a asp-page="Edit" asp-route-id="@Model.Person.Id" class="btn btn-warning">
                             <i class="bi bi-pencil"></i> Editar
                         </a>
                         <a asp-page="Index" class="btn btn-secondary">

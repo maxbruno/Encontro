@@ -46,8 +46,8 @@ public class Person
     [Display(Name = "CEP")]
     public string? ZipCode { get; set; }
 
-    [StringLength(100, ErrorMessage = "O núcleo deve ter no máximo 100 caracteres")]
-    [Display(Name = "Núcleo")]
+    [StringLength(100, ErrorMessage = "O grupo deve ter no máximo 100 caracteres")]
+    [Display(Name = "Grupo")]
     public string? Group { get; set; }
 
     [StringLength(150, ErrorMessage = "O nome do pai deve ter no máximo 150 caracteres")]
@@ -58,8 +58,8 @@ public class Person
     [Display(Name = "Nome da Mãe")]
     public string? MotherName { get; set; }
 
-    [StringLength(500, ErrorMessage = "A observação deve ter no máximo 500 caracteres")]
-    [Display(Name = "Observação")]
+    [StringLength(500, ErrorMessage = "As observações devem ter no máximo 500 caracteres")]
+    [Display(Name = "Observações")]
     [DataType(DataType.MultilineText)]
     public string? Notes { get; set; }
 

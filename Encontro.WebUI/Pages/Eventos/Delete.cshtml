@@ -1,0 +1,53 @@
+﻿@page
+@model Encontro.WebUI.Pages.Eventos.DeleteModel
+
+@{
+    ViewData["Title"] = "Excluir Evento";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h1 class="mb-4">Excluir Evento</h1>
+
+            <div class="alert alert-danger" role="alert">
+                <h5 class="alert-heading">Confirmar exclusão</h5>
+                <p>Tem certeza que deseja excluir este evento?</p>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Event.Name)</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Event.Name)</dd>
+
+                        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Event.EventType)</dt>
+                        <dd class="col-sm-9">
+                            @if (Model.Event.EventType == Encontro.Domain.Entities.EventType.SeguiMe)
+                            {
+                                <span class="badge bg-primary">Segue-me</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-success">ECC</span>
+                            }
+                        </dd>
+
+                        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Event.CreatedAt)</dt>
+                        <dd class="col-sm-9">@Model.Event.CreatedAt.ToString("dd/MM/yyyy HH:mm:ss")</dd>
+                    </dl>
+
+                    <form method="post">
+                        <input type="hidden" asp-for="Event.Id" />
+                        <button type="submit" class="btn btn-danger">
+                            <i class="bi bi-trash"></i> Confirmar Exclusão
+                        </button>
+                        <a asp-page="Index" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left"></i> Cancelar
+                        </a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -86,4 +86,9 @@ public class PersonService : IPersonService
     {
         return await _repository.ExistsAsync(id);
     }
+
+    public async Task<IEnumerable<Person>> SearchAsync(string searchTerm)
+    {
+        return await _repository.SearchAsync(searchTerm);
+    }
 }

@@ -32,10 +32,10 @@ public class ImageService : IImageService
         // Generate unique name with GUID
         var fileName = $"{Guid.NewGuid()}.jpg";
 
-        // Processar e comprimir imagem usando ImageSharp
+        // Process and compress image using ImageSharp
         using var image = await Image.LoadAsync(file.OpenReadStream());
         
-        // Redimensionar se necessário mantendo proporção
+        // Resize if necessary while maintaining aspect ratio
         if (image.Width > MaxWidthOrHeight || image.Height > MaxWidthOrHeight)
         {
             var options = new ResizeOptions
@@ -46,7 +46,7 @@ public class ImageService : IImageService
             image.Mutate(x => x.Resize(options));
         }
 
-        // Salvar em stream de memória
+        // Save to memory stream
         using var memoryStream = new MemoryStream();
         await image.SaveAsJpegAsync(memoryStream, new JpegEncoder
         {

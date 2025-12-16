@@ -10,4 +10,5 @@ public interface IPersonRepository
     Task<Person> UpdateAsync(Person person);
     Task<bool> DeleteAsync(int id);
     Task<bool> ExistsAsync(int id);
+    Task<IEnumerable<Person>> SearchAsync(string searchTerm);
 }
