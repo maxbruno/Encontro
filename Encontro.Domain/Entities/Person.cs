@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Encontro.Domain.Attributes;
 
 namespace Encontro.Domain.Entities;
 
@@ -14,6 +15,11 @@ public class Person
     [StringLength(50, ErrorMessage = "O tipo deve ter no máximo 50 caracteres")]
     [Display(Name = "Tipo")]
     public string? Type { get; set; }
+
+    [RequiredIf("Type", "Casal", ErrorMessage = "O cônjuge é obrigatório para o tipo Casal")]
+    [StringLength(150, ErrorMessage = "O nome do cônjuge deve ter no máximo 150 caracteres")]
+    [Display(Name = "Cônjuge")]
+    public string? Spouse { get; set; }
 
     [Display(Name = "Data de Nascimento")]
     [DataType(DataType.Date)]

@@ -48,7 +48,7 @@
                                 <label asp-for="Person.Type" class="form-label">
                                     <i class="bi bi-tag"></i> <span asp-for="Person.Type"></span> <span class="text-danger">*</span>
                                 </label>
-                                <select asp-for="Person.Type" class="form-select" required title="Este campo é obrigatório" oninvalid="this.setCustomValidity('Este campo é obrigatório')" oninput="this.setCustomValidity('')">
+                                <select asp-for="Person.Type" class="form-select" id="personType" required title="Este campo é obrigatório" oninvalid="this.setCustomValidity('Este campo é obrigatório')" oninput="this.setCustomValidity('')">
                                     <option value="">Selecione...</option>
                                     <option value="Casal">Casal</option>
                                     <option value="Jovem">Jovem</option>
@@ -62,6 +62,16 @@
                                 </label>
                                 <input asp-for="Person.BirthDate" class="form-control" type="date" max="@DateTime.Today.ToString("yyyy-MM-dd")" />
                                 <span asp-validation-for="Person.BirthDate" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3" id="spouseRow" style="display: none;">
+                            <div class="col-md-12">
+                                <label asp-for="Person.Spouse" class="form-label">
+                                    <i class="bi bi-heart"></i> <span asp-for="Person.Spouse"></span> <span class="text-danger" id="spouseRequired">*</span>
+                                </label>
+                                <input asp-for="Person.Spouse" class="form-control" id="spouseInput" maxlength="150" placeholder="Nome do cônjuge" />
+                                <span asp-validation-for="Person.Spouse" class="text-danger"></span>
                             </div>
                         </div>
 
@@ -338,5 +348,32 @@
         document.getElementById('personForm').addEventListener('submit', () => {
             formChanged = false;
         });
+
+        // Spouse field conditional logic
+        const personTypeSelect = document.getElementById('personType');
+        const spouseRow = document.getElementById('spouseRow');
+        const spouseInput = document.getElementById('spouseInput');
+
+        function toggleSpouseField() {
+            if (personTypeSelect.value === 'Casal') {
+                spouseRow.style.display = '';
+                spouseInput.setAttribute('required', '');
+                spouseInput.setAttribute('title', 'Este campo é obrigatório para casais');
+                spouseInput.setAttribute('oninvalid', "this.setCustomValidity('Este campo é obrigatório')");
+                spouseInput.setAttribute('oninput', "this.setCustomValidity('')");
+            } else {
+                spouseRow.style.display = 'none';
+                spouseInput.removeAttribute('required');
+                spouseInput.removeAttribute('title');
+                spouseInput.value = '';
+                spouseInput.setCustomValidity('');
+            }
+        }
+
+        // Initialize on page load
+        toggleSpouseField();
+
+        // Toggle when type changes
+        personTypeSelect.addEventListener('change', toggleSpouseField);
     </script>
 }
