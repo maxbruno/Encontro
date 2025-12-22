@@ -234,6 +234,7 @@
                                             }
                                         </a>
                                     </th>
+                                    <th style="width: 80px;">Etapa</th>
                                     <th style="width: 100px;">Status</th>
                                     <th style="width: 180px;">Observações</th>
                                     <th style="width: 130px;">Ações</th>
@@ -286,6 +287,9 @@
                                             </td>
                                             <td class="align-middle">@participant.RegisteredAt.ToString("dd/MM/yyyy HH:mm")</td>
                                             <td class="align-middle">
+                                                <span class="badge bg-primary">@participant.Stage</span>
+                                            </td>
+                                            <td class="align-middle">
                                                 @if (participant.Indicated.HasValue)
                                                 {
                                                     if (participant.Indicated.Value)
@@ -335,7 +339,7 @@
                                 else
                                 {
                                     <tr>
-                                        <td colspan="8" class="text-center text-muted py-4">
+                                        <td colspan="9" class="text-center text-muted py-4">
                                             @if (Model.Participants.Any() && !Model.FilteredParticipants.Any())
                                             {
                                                 <text><i class="bi bi-search"></i> Nenhum participante encontrado com os filtros aplicados.</text>

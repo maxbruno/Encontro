@@ -90,7 +90,26 @@
                         </div>
 
                         <div class="row mb-3">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
+                                <label asp-for="Participant.Stage" class="form-label">
+                                    <i class="bi bi-flag"></i> Etapa <span class="text-danger">*</span>
+                                </label>
+                                <select asp-for="Participant.Stage" class="form-select" required>
+                                    <option value="">-- Selecione --</option>
+                                    <option value="1">Etapa 1</option>
+                                    <option value="2">Etapa 2</option>
+                                    <option value="3">Etapa 3</option>
+                                    <option value="4">Etapa 4</option>
+                                    <option value="5">Etapa 5</option>
+                                    <option value="6">Etapa 6</option>
+                                    <option value="7">Etapa 7</option>
+                                    <option value="8">Etapa 8</option>
+                                    <option value="9">Etapa 9</option>
+                                    <option value="10">Etapa 10</option>
+                                </select>
+                                <span asp-validation-for="Participant.Stage" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-4">
                                 <label asp-for="Participant.Indicated" class="form-label">
                                     <i class="bi bi-person-check"></i> Indicado
                                 </label>
@@ -101,7 +120,7 @@
                                 </select>
                                 <span asp-validation-for="Participant.Indicated" class="text-danger"></span>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <label asp-for="Participant.Accepted" class="form-label">
                                     <i class="bi bi-check-circle"></i> Aceitou
                                 </label>

@@ -79,6 +79,9 @@
                         <dt class="col-sm-3">Data de Inscrição</dt>
                         <dd class="col-sm-9">@Model.Participant.RegisteredAt.ToString("dd/MM/yyyy HH:mm")</dd>
 
+                        <dt class="col-sm-3">Etapa</dt>
+                        <dd class="col-sm-9"><span class="badge bg-primary">Etapa @Model.Participant.Stage</span></dd>
+
                         @if (!string.IsNullOrEmpty(Model.Participant.Notes))
                         {
                             <dt class="col-sm-3">Observações</dt>

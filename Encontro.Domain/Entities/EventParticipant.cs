@@ -27,6 +27,11 @@ public class EventParticipant
     [Display(Name = "Data de Inscrição")]
     public DateTime RegisteredAt { get; set; }
 
+    [Required(ErrorMessage = "A etapa é obrigatória")]
+    [Range(1, 10, ErrorMessage = "A etapa deve estar entre 1 e 10")]
+    [Display(Name = "Etapa")]
+    public int Stage { get; set; }
+
     [MaxLength(500, ErrorMessage = "As observações devem ter no máximo 500 caracteres")]
     [Display(Name = "Observações")]
     public string? Notes { get; set; }
