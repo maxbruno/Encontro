@@ -78,6 +78,14 @@ using (var scope = app.Services.CreateScope())
     try
     {
         Encontro.WebUI.Data.DbInitializer.Initialize(services).Wait();
+        
+        // Seed test data only in development environment
+        if (app.Environment.IsDevelopment())
+        {
+            var context = services.GetRequiredService<AppDbContext>();
+            var seeder = new DevDataSeeder(context);
+            seeder.SeedTestEventParticipantsAsync().Wait();
+        }
     }
     catch (Exception ex)
     {

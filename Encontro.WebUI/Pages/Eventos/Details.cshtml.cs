@@ -152,7 +152,13 @@ namespace Encontro.WebUI.Pages.Eventos
         {
             if (string.IsNullOrWhiteSpace(SortBy))
             {
-                return participants.OrderBy(p => p.Person.Name).ToList();
+                // Default multi-level sorting: Team > Role > Name > RegisteredAt
+                return participants
+                    .OrderBy(p => p.Team?.Order ?? "ZZZ")
+                    .ThenBy(p => p.Role?.Order ?? "ZZZ")
+                    .ThenBy(p => p.Person.Name)
+                    .ThenBy(p => p.RegisteredAt)
+                    .ToList();
             }
 
             var sortOrder = SortOrder?.ToLower() == "desc";
@@ -164,18 +170,23 @@ namespace Encontro.WebUI.Pages.Eventos
                     : participants.OrderBy(p => p.Person.Name).ToList(),
                 
                 "team" => sortOrder
-                    ? participants.OrderByDescending(p => p.Team?.Name ?? "ZZZZ").ToList()
-                    : participants.OrderBy(p => p.Team?.Name ?? "ZZZZ").ToList(),
+                    ? participants.OrderByDescending(p => p.Team?.Order ?? "ZZZ").ToList()
+                    : participants.OrderBy(p => p.Team?.Order ?? "ZZZ").ToList(),
                 
                 "role" => sortOrder
-                    ? participants.OrderByDescending(p => p.Role?.Name ?? "ZZZZ").ToList()
-                    : participants.OrderBy(p => p.Role?.Name ?? "ZZZZ").ToList(),
+                    ? participants.OrderByDescending(p => p.Role?.Order ?? "ZZZ").ToList()
+                    : participants.OrderBy(p => p.Role?.Order ?? "ZZZ").ToList(),
                 
                 "date" => sortOrder
                     ? participants.OrderByDescending(p => p.RegisteredAt).ToList()
                     : participants.OrderBy(p => p.RegisteredAt).ToList(),
                 
-                _ => participants.OrderBy(p => p.Person.Name).ToList()
+                _ => participants
+                    .OrderBy(p => p.Team?.Order ?? "ZZZ")
+                    .ThenBy(p => p.Role?.Order ?? "ZZZ")
+                    .ThenBy(p => p.Person.Name)
+                    .ThenBy(p => p.RegisteredAt)
+                    .ToList()
             };
         }
     }
