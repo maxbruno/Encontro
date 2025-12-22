@@ -46,7 +46,13 @@ builder.Services.AddScoped<IPersonService>(sp =>
     var environment = sp.GetRequiredService<IWebHostEnvironment>();
     return new PersonService(repository, imageService, environment.WebRootPath);
 });
-builder.Services.AddScoped<IEventService, EventService>();
+builder.Services.AddScoped<IEventService>(sp =>
+{
+    var repository = sp.GetRequiredService<IEventRepository>();
+    var imageService = sp.GetRequiredService<IImageService>();
+    var environment = sp.GetRequiredService<IWebHostEnvironment>();
+    return new EventService(repository, imageService, environment.WebRootPath);
+});
 builder.Services.AddScoped<IEventParticipantService, EventParticipantService>();
 
 // Configure Identity with Roles

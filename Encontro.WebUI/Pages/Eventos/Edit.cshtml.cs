@@ -10,14 +10,19 @@ namespace Encontro.WebUI.Pages.Eventos
     public class EditModel : PageModel
     {
         private readonly IEventService _eventService;
+        private readonly ILogger<EditModel> _logger;
 
-        public EditModel(IEventService eventService)
+        public EditModel(IEventService eventService, ILogger<EditModel> logger)
         {
             _eventService = eventService;
+            _logger = logger;
         }
 
         [BindProperty]
         public Event Event { get; set; } = default!;
+
+        [BindProperty]
+        public IFormFile? PatronSaintPhoto { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -39,6 +44,12 @@ namespace Encontro.WebUI.Pages.Eventos
 
         public async Task<IActionResult> OnPostAsync()
         {
+            _logger.LogInformation("OnPostAsync called");
+            _logger.LogInformation($"Event.Id: {Event.Id}");
+            _logger.LogInformation($"Event.PatronSaintName: '{Event.PatronSaintName}'");
+            _logger.LogInformation($"Event.PatronSaintImageUrl: '{Event.PatronSaintImageUrl}'");
+            _logger.LogInformation($"PatronSaintPhoto: {(PatronSaintPhoto != null ? $"File uploaded: {PatronSaintPhoto.FileName}" : "No file")}");
+            
             if (!ModelState.IsValid)
             {
                 return Page();
@@ -46,10 +57,16 @@ namespace Encontro.WebUI.Pages.Eventos
 
             try
             {
-                await _eventService.UpdateAsync(Event);
+                // Ensure UpdatedAt is set
+                Event.UpdatedAt = DateTime.UtcNow;
+                
+                var result = await _eventService.UpdateAsync(Event, PatronSaintPhoto);
+                
+                _logger.LogInformation($"Updated event - PatronSaintName: '{result.PatronSaintName}', PatronSaintImageUrl: '{result.PatronSaintImageUrl}'");
             }
-            catch (InvalidOperationException)
+            catch (InvalidOperationException ex)
             {
+                _logger.LogError(ex, "Event not found");
                 return NotFound();
             }
 

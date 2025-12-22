@@ -26,7 +26,7 @@
                 </a>
             </div>
 
-            <form method="post" id="eventForm">
+            <form method="post" enctype="multipart/form-data" id="eventForm">
                 <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
 
                 <!-- Card: Informações do Evento -->
@@ -45,7 +45,7 @@
                                 <small class="text-muted"><span id="charCount">0</span>/100 caracteres</small>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row mb-3">
                             <div class="col-md-12">
                                 <label asp-for="Event.EventType" class="form-label">
                                     <i class="bi bi-tag-fill"></i> <span asp-for="Event.EventType"></span> <span class="text-danger">*</span>
@@ -58,6 +58,37 @@
                                     <small class="text-muted">Preview: </small>
                                     <span id="previewBadge"></span>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <label asp-for="Event.PatronSaintName" class="form-label">
+                                    <i class="bi bi-star"></i> <span asp-for="Event.PatronSaintName"></span>
+                                </label>
+                                <input asp-for="Event.PatronSaintName" class="form-control" maxlength="100" placeholder="Ex: São Francisco de Assis" id="patronName" />
+                                <span asp-validation-for="Event.PatronSaintName" class="text-danger"></span>
+                                <small class="text-muted"><span id="patronCharCount">0</span>/100 caracteres</small>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label class="form-label">
+                                    <i class="bi bi-image"></i> Imagem do Santo Padroeiro
+                                </label>
+                                <div class="border rounded p-3" id="dropZone" style="background-color: #f8f9fa; cursor: pointer;">
+                                    <input type="file" asp-for="PatronSaintPhoto" class="form-control d-none" id="photoInput" accept="image/*" />
+                                    <div class="text-center" id="dropZoneContent">
+                                        <div id="photoPreview" class="mb-2" style="display: none;">
+                                            <img id="previewImage" src="#" alt="Preview" class="img-thumbnail" style="max-width: 200px; max-height: 200px; object-fit: cover;" />
+                                        </div>
+                                        <div id="dropZoneText">
+                                            <i class="bi bi-cloud-upload" style="font-size: 2rem; color: #6c757d;"></i>
+                                            <p class="mb-0 mt-2">Clique para selecionar uma imagem ou arraste aqui</p>
+                                            <small class="text-muted">Formatos: JPG, PNG, GIF, BMP (máx. 5MB)</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span asp-validation-for="PatronSaintPhoto" class="text-danger"></span>
                             </div>
                         </div>
                     </div>
@@ -108,6 +139,19 @@
             charCount.textContent = eventName.value.length;
         }
 
+        // Character counter for patron saint name
+        const patronName = document.getElementById('patronName');
+        const patronCharCount = document.getElementById('patronCharCount');
+        
+        if (patronName && patronCharCount) {
+            patronName.addEventListener('input', function() {
+                patronCharCount.textContent = this.value.length;
+            });
+            
+            // Initialize counter
+            patronCharCount.textContent = patronName.value.length;
+        }
+
         // Event type preview
         const eventType = document.getElementById('eventType');
         const typePreview = document.getElementById('typePreview');
@@ -127,6 +171,83 @@
                     typePreview.style.display = 'none';
                 }
             });
+        }
+
+        // Photo upload drag & drop functionality
+        const dropZone = document.getElementById('dropZone');
+        const photoInput = document.getElementById('photoInput');
+        const photoPreview = document.getElementById('photoPreview');
+        const previewImage = document.getElementById('previewImage');
+        const dropZoneText = document.getElementById('dropZoneText');
+
+        // Click to select file
+        dropZone.addEventListener('click', () => {
+            photoInput.click();
+        });
+
+        // Handle file selection
+        photoInput.addEventListener('change', function(e) {
+            handleFile(this.files[0]);
+        });
+
+        // Prevent default drag behaviors
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        // Highlight drop zone when dragging over it
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, () => {
+                dropZone.style.backgroundColor = '#e9ecef';
+            }, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, () => {
+                dropZone.style.backgroundColor = '#f8f9fa';
+            }, false);
+        });
+
+        // Handle dropped files
+        dropZone.addEventListener('drop', function(e) {
+            const dt = e.dataTransfer;
+            const file = dt.files[0];
+            handleFile(file);
+        }, false);
+
+        function handleFile(file) {
+            if (!file) return;
+
+            // Validate file type
+            if (!file.type.match('image.*')) {
+                alert('Por favor, selecione apenas arquivos de imagem.');
+                return;
+            }
+
+            // Validate file size (5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                alert('O arquivo deve ter no máximo 5MB.');
+                return;
+            }
+
+            // Preview image
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                previewImage.src = e.target.result;
+                photoPreview.style.display = 'block';
+                dropZoneText.style.display = 'none';
+            };
+            reader.readAsDataURL(file);
+
+            // Update file input (for drag & drop)
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(file);
+            photoInput.files = dataTransfer.files;
         }
 
         // Form change detection for unsaved warning

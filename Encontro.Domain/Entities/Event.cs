@@ -24,6 +24,14 @@ public class Event
     [Display(Name = "Tipo de Evento")]
     public EventType EventType { get; set; }
 
+    [StringLength(100, ErrorMessage = "O nome do santo padroeiro deve ter no máximo 100 caracteres")]
+    [Display(Name = "Santo Padroeiro")]
+    public string? PatronSaintName { get; set; }
+
+    [StringLength(255)]
+    [Display(Name = "Imagem do Santo Padroeiro")]
+    public string? PatronSaintImageUrl { get; set; }
+
     [Display(Name = "Data de Criação")]
     public DateTime CreatedAt { get; set; }
 

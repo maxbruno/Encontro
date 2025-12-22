@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "{id:int?}"
 @model Encontro.WebUI.Pages.Eventos.EditModel
 
 @{
@@ -12,15 +12,17 @@
 
             <div class="card">
                 <div class="card-body">
-                    <form method="post">
+                    <form method="post" enctype="multipart/form-data" id="editForm">
                         <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
                         <input type="hidden" asp-for="Event.Id" />
                         <input type="hidden" asp-for="Event.CreatedAt" />
+                        <input type="hidden" asp-for="Event.PatronSaintImageUrl" id="currentImageUrl" />
 
                         <div class="mb-3">
                             <label asp-for="Event.Name" class="form-label"></label>
-                            <input asp-for="Event.Name" class="form-control" />
+                            <input asp-for="Event.Name" class="form-control" id="eventName" />
                             <span asp-validation-for="Event.Name" class="text-danger"></span>
+                            <small class="text-muted"><span id="charCount">0</span>/100 caracteres</small>
                         </div>
 
                         <div class="mb-3">
@@ -28,6 +30,40 @@
                             <select asp-for="Event.EventType" asp-items="Html.GetEnumSelectList<Encontro.Domain.Entities.EventType>()" class="form-select">
                             </select>
                             <span asp-validation-for="Event.EventType" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Event.PatronSaintName" class="form-label"></label>
+                            <input asp-for="Event.PatronSaintName" class="form-control" maxlength="100" id="patronName" />
+                            <span asp-validation-for="Event.PatronSaintName" class="text-danger"></span>
+                            <small class="text-muted"><span id="patronCharCount">0</span>/100 caracteres</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">
+                                <i class="bi bi-image"></i> Imagem do Santo Padroeiro
+                            </label>
+                            @if (!string.IsNullOrEmpty(Model.Event.PatronSaintImageUrl))
+                            {
+                                <div class="mb-2">
+                                    <img src="@Url.Content(Model.Event.PatronSaintImageUrl)" alt="Imagem atual" class="img-thumbnail" style="max-width: 200px; max-height: 200px; object-fit: cover;" />
+                                    <p class="text-muted mt-1"><small>Imagem atual (será substituída se você selecionar uma nova)</small></p>
+                                </div>
+                            }
+                            <div class="border rounded p-3" id="dropZone" style="background-color: #f8f9fa; cursor: pointer;">
+                                <input type="file" asp-for="PatronSaintPhoto" class="form-control d-none" id="photoInput" accept="image/*" />
+                                <div class="text-center" id="dropZoneContent">
+                                    <div id="photoPreview" class="mb-2" style="display: none;">
+                                        <img id="previewImage" src="#" alt="Preview" class="img-thumbnail" style="max-width: 200px; max-height: 200px; object-fit: cover;" />
+                                    </div>
+                                    <div id="dropZoneText">
+                                        <i class="bi bi-cloud-upload" style="font-size: 2rem; color: #6c757d;"></i>
+                                        <p class="mb-0 mt-2">Clique para selecionar uma nova imagem ou arraste aqui</p>
+                                        <small class="text-muted">Formatos: JPG, PNG, GIF, BMP (máx. 5MB)</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <span asp-validation-for="PatronSaintPhoto" class="text-danger"></span>
                         </div>
 
                         <div class="mt-4">
@@ -47,4 +83,96 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <script>
+        // Character counter for event name
+        const eventName = document.getElementById('eventName');
+        const charCount = document.getElementById('charCount');
+        
+        if (eventName && charCount) {
+            eventName.addEventListener('input', function() {
+                charCount.textContent = this.value.length;
+            });
+            charCount.textContent = eventName.value.length;
+        }
+
+        // Character counter for patron saint name
+        const patronName = document.getElementById('patronName');
+        const patronCharCount = document.getElementById('patronCharCount');
+        
+        if (patronName && patronCharCount) {
+            patronName.addEventListener('input', function() {
+                patronCharCount.textContent = this.value.length;
+            });
+            patronCharCount.textContent = patronName.value.length;
+        }
+
+        // Photo upload drag & drop functionality
+        const dropZone = document.getElementById('dropZone');
+        const photoInput = document.getElementById('photoInput');
+        const photoPreview = document.getElementById('photoPreview');
+        const previewImage = document.getElementById('previewImage');
+        const dropZoneText = document.getElementById('dropZoneText');
+
+        dropZone.addEventListener('click', () => {
+            photoInput.click();
+        });
+
+        photoInput.addEventListener('change', function(e) {
+            handleFile(this.files[0]);
+        });
+
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, () => {
+                dropZone.style.backgroundColor = '#e9ecef';
+            }, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, () => {
+                dropZone.style.backgroundColor = '#f8f9fa';
+            }, false);
+        });
+
+        dropZone.addEventListener('drop', function(e) {
+            const dt = e.dataTransfer;
+            const file = dt.files[0];
+            handleFile(file);
+        }, false);
+
+        function handleFile(file) {
+            if (!file) return;
+
+            if (!file.type.match('image.*')) {
+                alert('Por favor, selecione apenas arquivos de imagem.');
+                return;
+            }
+
+            if (file.size > 5 * 1024 * 1024) {
+                alert('O arquivo deve ter no máximo 5MB.');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                previewImage.src = e.target.result;
+                photoPreview.style.display = 'block';
+                dropZoneText.style.display = 'none';
+            };
+            reader.readAsDataURL(file);
+
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(file);
+            photoInput.files = dataTransfer.files;
+        }
+    </script>
 }

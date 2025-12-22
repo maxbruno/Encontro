@@ -20,6 +20,9 @@ namespace Encontro.WebUI.Pages.Eventos
         public Event Event { get; set; } = default!;
 
         [BindProperty]
+        public IFormFile? PatronSaintPhoto { get; set; }
+
+        [BindProperty]
         public string? Action { get; set; }
 
         public IActionResult OnGet()
@@ -34,7 +37,7 @@ namespace Encontro.WebUI.Pages.Eventos
                 return Page();
             }
 
-            var createdEvent = await _eventService.CreateAsync(Event);
+            var createdEvent = await _eventService.CreateAsync(Event, PatronSaintPhoto);
 
             TempData["SuccessMessage"] = $"Evento '{Event.Name}' criado com sucesso!";
 

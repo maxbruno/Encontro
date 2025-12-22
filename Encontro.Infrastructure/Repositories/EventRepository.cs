@@ -62,4 +62,9 @@ public class EventRepository : IEventRepository
             .OrderByDescending(e => e.CreatedAt)
             .ToListAsync();
     }
+
+    public void Detach(Event eventEntity)
+    {
+        _context.Entry(eventEntity).State = EntityState.Detached;
+    }
 }

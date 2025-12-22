@@ -10,4 +10,5 @@ public interface IEventRepository
     Task<Event> UpdateAsync(Event eventEntity);
     Task<bool> DeleteAsync(int id);
     Task<IEnumerable<Event>> GetByTypeAsync(EventType type);
+    void Detach(Event eventEntity);
 }
