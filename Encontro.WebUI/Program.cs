@@ -18,9 +18,10 @@ builder.Services.AddRazorPages()
             new CustomDataAnnotationLocalizer();
     });
 
-// Configure DbContext to use SQLite
+// Configure DbContext to use MySQL
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
 // Register repositories from Infrastructure layer
 builder.Services.AddScoped<IPersonRepository, PersonRepository>();

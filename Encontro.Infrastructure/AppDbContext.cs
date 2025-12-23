@@ -8,9 +8,6 @@ namespace Encontro.Infrastructure
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) 
         {
-            // Enable foreign key constraints for SQLite
-            Database.OpenConnection();
-            Database.ExecuteSqlRaw("PRAGMA foreign_keys = ON;");
         }
 
         public DbSet<Person> People { get; set; }
