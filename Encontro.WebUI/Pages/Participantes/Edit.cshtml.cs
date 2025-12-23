@@ -12,21 +12,18 @@ namespace Encontro.WebUI.Pages.Participantes
     public class EditModel : PageModel
     {
         private readonly IEventParticipantService _eventParticipantService;
-        private readonly ITeamRepository _teamRepository;
-        private readonly IRoleRepository _roleRepository;
+        private readonly ILookupService _lookupService;
         private readonly IEventService _eventService;
         private readonly IPersonService _personService;
 
         public EditModel(
             IEventParticipantService eventParticipantService,
-            ITeamRepository teamRepository,
-            IRoleRepository roleRepository,
+            ILookupService lookupService,
             IEventService eventService,
             IPersonService personService)
         {
             _eventParticipantService = eventParticipantService;
-            _teamRepository = teamRepository;
-            _roleRepository = roleRepository;
+            _lookupService = lookupService;
             _eventService = eventService;
             _personService = personService;
         }
@@ -99,7 +96,7 @@ namespace Encontro.WebUI.Pages.Participantes
         private async Task LoadDropdownsAsync()
         {
             // Load teams
-            var teams = await _teamRepository.GetAllAsync();
+            var teams = await _lookupService.GetTeamsForSelectionAsync();
             TeamsSelectList = new SelectList(
                 teams.OrderBy(t => t.Order),
                 "Id",
@@ -108,7 +105,7 @@ namespace Encontro.WebUI.Pages.Participantes
                 "Order");
             
             // Load roles
-            var roles = await _roleRepository.GetAllAsync();
+            var roles = await _lookupService.GetRolesForSelectionAsync();
             var roleList = roles.Select(r => new
             {
                 Id = r.Id,

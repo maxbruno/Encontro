@@ -1,8 +1,9 @@
 using System.ComponentModel.DataAnnotations;
+using Encontro.Domain.Interfaces;
 
 namespace Encontro.Domain.Entities;
 
-public class EventParticipant
+public class EventParticipant : ISoftDeletable
 {
     public int Id { get; set; }
 
@@ -41,4 +42,9 @@ public class EventParticipant
 
     [Display(Name = "Aceitou")]
     public bool? Accepted { get; set; }
+
+    // Soft Delete
+    public bool IsDeleted { get; set; }
+    public DateTime? DeletedAt { get; set; }
+    public string? DeletedBy { get; set; }
 }

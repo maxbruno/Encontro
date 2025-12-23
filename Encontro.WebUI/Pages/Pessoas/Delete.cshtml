@@ -14,8 +14,63 @@
                 <h4 class="alert-heading">
                     <i class="bi bi-exclamation-triangle"></i> Atenção!
                 </h4>
-                <p class="mb-0">Você tem certeza que deseja excluir esta pessoa?</p>
+                <p class="mb-0">Ao confirmar, esta pessoa será <strong>inativada</strong>. Os dados e vínculos com eventos serão mantidos, mas a pessoa não aparecerá mais nas listagens.</p>
             </div>
+
+            <!-- Exibir erros de validação somente se houver erros -->
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+            }
+
+            <!-- Card de Eventos Vinculados -->
+            @if (Model.EventParticipations.Any())
+            {
+                <div class="card mb-3 border-info">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="mb-0">
+                            <i class="bi bi-calendar-event"></i> 
+                            Participações em Eventos (@Model.EventParticipations.Count())
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-muted mb-3">
+                            Esta pessoa está inscrita nos seguintes eventos. Ao inativar, os vínculos serão mantidos no histórico.
+                        </p>
+                        <div class="list-group">
+                            @foreach (var participation in Model.EventParticipations)
+                            {
+                                <div class="list-group-item">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="mb-1">@participation.Event.Name</h6>
+                                            <small class="text-muted">
+                                                <i class="bi bi-calendar"></i> @participation.RegisteredAt.ToString("dd/MM/yyyy")
+                                                @if (participation.Team != null)
+                                                {
+                                                    <span class="ms-2">
+                                                        <i class="bi bi-people"></i> @participation.Team.Name
+                                                    </span>
+                                                }
+                                                @if (participation.Role != null)
+                                                {
+                                                    <span class="ms-2">
+                                                        <i class="bi bi-briefcase"></i> @participation.Role.Name
+                                                    </span>
+                                                }
+                                            </small>
+                                        </div>
+                                        <a asp-page="/Eventos/Details" asp-route-id="@participation.EventId" 
+                                           class="btn btn-sm btn-outline-primary">
+                                            <i class="bi bi-eye"></i> Ver Evento
+                                        </a>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
 
             <div class="card">
                 <div class="card-body">
@@ -52,8 +107,8 @@
                     <form method="post">
                         <input type="hidden" asp-for="Person.Id" />
                         <div class="mt-4">
-                            <button type="submit" class="btn btn-danger">
-                                <i class="bi bi-trash"></i> Confirmar Exclusão
+                            <button type="submit" class="btn btn-warning">
+                                <i class="bi bi-person-x"></i> Confirmar Inativação
                             </button>
                             <a asp-page="Index" class="btn btn-secondary">
                                 <i class="bi bi-arrow-left"></i> Cancelar

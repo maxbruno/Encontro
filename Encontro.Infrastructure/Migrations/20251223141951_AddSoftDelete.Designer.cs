@@ -3,6 +3,7 @@ using System;
 using Encontro.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Encontro.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251223141951_AddSoftDelete")]
+    partial class AddSoftDelete
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -57,8 +60,6 @@ namespace Encontro.Infrastructure.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Name");
 
                     b.ToTable("Events");
                 });
@@ -198,10 +199,6 @@ namespace Encontro.Infrastructure.Migrations
                         .HasColumnType("varchar(10)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Email");
-
-                    b.HasIndex("Name");
 
                     b.HasIndex("TeamId");
 

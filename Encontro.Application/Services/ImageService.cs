@@ -17,12 +17,25 @@ public class ImageService : IImageService
         _storageService = storageService;
     }
 
-    public async Task<string> SaveImageAsync(IFormFile file, string webRootPath)
+    public async Task<string> SaveImageAsync(IFormFile file)
     {
         if (file == null || file.Length == 0)
             throw new ArgumentException("Invalid image file");
 
-        // Validate file type
+        // Validate file size (5MB max)
+        const long MaxFileSize = 5 * 1024 * 1024; // 5MB
+        if (file.Length > MaxFileSize)
+            throw new ArgumentException("File too large. Maximum size is 5MB.");
+
+        // Validate Content-Type header
+        var allowedContentTypes = new[] { 
+            "image/jpeg", "image/jpg", "image/png", 
+            "image/gif", "image/bmp" 
+        };
+        if (!allowedContentTypes.Contains(file.ContentType?.ToLower()))
+            throw new ArgumentException("Invalid content type. Only image files are allowed.");
+
+        // Validate file extension
         var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif", ".bmp" };
         var extension = Path.GetExtension(file.FileName).ToLowerInvariant();
         
@@ -33,7 +46,18 @@ public class ImageService : IImageService
         var fileName = $"{Guid.NewGuid()}.jpg";
 
         // Process and compress image using ImageSharp
-        using var image = await Image.LoadAsync(file.OpenReadStream());
+        // Magic Bytes Validation: ImageSharp validates file content
+        Image image;
+        try
+        {
+            image = await Image.LoadAsync(file.OpenReadStream());
+        }
+        catch (Exception ex)
+        {
+            throw new ArgumentException("File is not a valid image.", ex);
+        }
+        
+        using (image)
         
         // Resize if necessary while maintaining aspect ratio
         if (image.Width > MaxWidthOrHeight || image.Height > MaxWidthOrHeight)
@@ -59,7 +83,7 @@ public class ImageService : IImageService
         return await _storageService.SaveFileAsync(fileName, memoryStream, "image/jpeg");
     }
 
-    public async Task DeleteImageAsync(string? imagePath, string webRootPath)
+    public async Task DeleteImageAsync(string? imagePath)
     {
         if (string.IsNullOrWhiteSpace(imagePath))
             return;

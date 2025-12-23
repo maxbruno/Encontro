@@ -8,14 +8,17 @@ namespace Encontro.Application.Services;
 public class EventService : IEventService
 {
     private readonly IEventRepository _repository;
+    private readonly IEventParticipantRepository _eventParticipantRepository;
     private readonly IImageService _imageService;
-    private readonly string _webRootPath;
 
-    public EventService(IEventRepository repository, IImageService imageService, string webRootPath)
+    public EventService(
+        IEventRepository repository, 
+        IEventParticipantRepository eventParticipantRepository,
+        IImageService imageService)
     {
         _repository = repository;
+        _eventParticipantRepository = eventParticipantRepository;
         _imageService = imageService;
-        _webRootPath = webRootPath;
     }
 
     public async Task<IEnumerable<Event>> GetAllAsync()
@@ -32,7 +35,7 @@ public class EventService : IEventService
     {
         if (patronSaintPhoto != null)
         {
-            eventEntity.PatronSaintImageUrl = await _imageService.SaveImageAsync(patronSaintPhoto, _webRootPath);
+            eventEntity.PatronSaintImageUrl = await _imageService.SaveImageAsync(patronSaintPhoto);
         }
         
         return await _repository.AddAsync(eventEntity);
@@ -52,10 +55,10 @@ public class EventService : IEventService
             // Delete old image if exists
             if (!string.IsNullOrEmpty(existingEvent.PatronSaintImageUrl))
             {
-                await _imageService.DeleteImageAsync(existingEvent.PatronSaintImageUrl, _webRootPath);
+                await _imageService.DeleteImageAsync(existingEvent.PatronSaintImageUrl);
             }
             
-            eventEntity.PatronSaintImageUrl = await _imageService.SaveImageAsync(patronSaintPhoto, _webRootPath);
+            eventEntity.PatronSaintImageUrl = await _imageService.SaveImageAsync(patronSaintPhoto);
         }
         else
         {
@@ -71,10 +74,19 @@ public class EventService : IEventService
 
     public async Task<bool> DeleteAsync(int id)
     {
+        // Verificar se evento tem participantes
+        var participants = await _eventParticipantRepository.GetByEventIdAsync(id);
+        if (participants.Any())
+        {
+            throw new InvalidOperationException(
+                $"Não é possível excluir evento com {participants.Count()} participante(s). " +
+                "Remova todos os participantes do evento primeiro.");
+        }
+
         var eventEntity = await _repository.GetByIdAsync(id);
         if (eventEntity != null && !string.IsNullOrEmpty(eventEntity.PatronSaintImageUrl))
         {
-            await _imageService.DeleteImageAsync(eventEntity.PatronSaintImageUrl, _webRootPath);
+            await _imageService.DeleteImageAsync(eventEntity.PatronSaintImageUrl);
         }
         
         return await _repository.DeleteAsync(id);

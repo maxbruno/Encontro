@@ -1,8 +1,9 @@
 using System.ComponentModel.DataAnnotations;
+using Encontro.Domain.Interfaces;
 
 namespace Encontro.Domain.Entities;
 
-public class Team
+public class Team : ISoftDeletable
 {
     public int Id { get; set; }
 
@@ -24,4 +25,9 @@ public class Team
 
     // Navigation property
     public ICollection<Person> People { get; set; } = new List<Person>();
+
+    // Soft Delete
+    public bool IsDeleted { get; set; }
+    public DateTime? DeletedAt { get; set; }
+    public string? DeletedBy { get; set; }
 }

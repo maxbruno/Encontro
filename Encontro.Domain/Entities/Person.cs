@@ -1,9 +1,10 @@
 using System.ComponentModel.DataAnnotations;
 using Encontro.Domain.Attributes;
+using Encontro.Domain.Interfaces;
 
 namespace Encontro.Domain.Entities;
 
-public class Person
+public class Person : ISoftDeletable
 {
     public int Id { get; set; }
 
@@ -72,4 +73,9 @@ public class Person
     [StringLength(255, ErrorMessage = "O caminho da foto deve ter no máximo 255 caracteres")]
     [Display(Name = "Foto")]
     public string? PhotoUrl { get; set; }
+
+    // Soft Delete
+    public bool IsDeleted { get; set; }
+    public DateTime? DeletedAt { get; set; }
+    public string? DeletedBy { get; set; }
 }

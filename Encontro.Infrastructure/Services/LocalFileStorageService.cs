@@ -17,6 +17,17 @@ public class LocalFileStorageService : IStorageService
 
     public async Task<string> SaveFileAsync(string fileName, Stream stream, string contentType)
     {
+        // Path Traversal Protection: Sanitize filename
+        fileName = Path.GetFileName(fileName);
+        
+        // Validate filename for invalid characters and path traversal attempts
+        if (string.IsNullOrWhiteSpace(fileName) || 
+            fileName.Contains("..") || 
+            fileName.Any(c => Path.GetInvalidFileNameChars().Contains(c)))
+        {
+            throw new ArgumentException("Invalid filename", nameof(fileName));
+        }
+
         var uploadPath = Path.Combine(_webRootPath, UploadFolder);
         
         // Create directory if it doesn't exist
@@ -40,7 +51,15 @@ public class LocalFileStorageService : IStorageService
 
         try
         {
-            var fullPath = Path.Combine(_webRootPath, filePath);
+            var fullPath = Path.GetFullPath(Path.Combine(_webRootPath, filePath));
+            var uploadsPath = Path.GetFullPath(Path.Combine(_webRootPath, UploadFolder));
+            
+            // Path Traversal Protection: Ensure file is within uploads directory
+            if (!fullPath.StartsWith(uploadsPath, StringComparison.OrdinalIgnoreCase))
+            {
+                // File is outside uploads directory - silently return without deleting
+                return Task.CompletedTask;
+            }
             
             if (File.Exists(fullPath))
                 File.Delete(fullPath);

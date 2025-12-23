@@ -8,14 +8,17 @@ namespace Encontro.Application.Services;
 public class PersonService : IPersonService
 {
     private readonly IPersonRepository _repository;
+    private readonly IEventParticipantRepository _eventParticipantRepository;
     private readonly IImageService _imageService;
-    private readonly string _webRootPath;
 
-    public PersonService(IPersonRepository repository, IImageService imageService, string webRootPath)
+    public PersonService(
+        IPersonRepository repository, 
+        IEventParticipantRepository eventParticipantRepository,
+        IImageService imageService)
     {
         _repository = repository;
+        _eventParticipantRepository = eventParticipantRepository;
         _imageService = imageService;
-        _webRootPath = webRootPath;
     }
 
     public async Task<IEnumerable<Person>> GetAllAsync()
@@ -33,7 +36,7 @@ public class PersonService : IPersonService
         // Save photo if provided
         if (photo != null && photo.Length > 0)
         {
-            person.PhotoUrl = await _imageService.SaveImageAsync(photo, _webRootPath);
+            person.PhotoUrl = await _imageService.SaveImageAsync(photo);
         }
 
         return await _repository.AddAsync(person);
@@ -56,10 +59,10 @@ public class PersonService : IPersonService
             // Delete old photo if exists
             if (!string.IsNullOrWhiteSpace(oldPhotoUrl))
             {
-                await _imageService.DeleteImageAsync(oldPhotoUrl, _webRootPath);
+                await _imageService.DeleteImageAsync(oldPhotoUrl);
             }
 
-            person.PhotoUrl = await _imageService.SaveImageAsync(photo, _webRootPath);
+            person.PhotoUrl = await _imageService.SaveImageAsync(photo);
         }
         else
         {
@@ -72,13 +75,8 @@ public class PersonService : IPersonService
 
     public async Task<bool> DeleteAsync(int id)
     {
-        // Get person to delete associated photo
-        var person = await _repository.GetByIdAsync(id);
-        if (person != null && !string.IsNullOrWhiteSpace(person.PhotoUrl))
-        {
-            await _imageService.DeleteImageAsync(person.PhotoUrl, _webRootPath);
-        }
-
+        // Com soft delete, não precisamos deletar a foto
+        // A pessoa será apenas inativada, mantendo todos os dados e relacionamentos
         return await _repository.DeleteAsync(id);
     }
 

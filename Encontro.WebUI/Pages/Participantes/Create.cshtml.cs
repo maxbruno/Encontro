@@ -12,22 +12,16 @@ namespace Encontro.WebUI.Pages.Participantes
     public class CreateModel : PageModel
     {
         private readonly IEventParticipantService _eventParticipantService;
-        private readonly IPersonRepository _personRepository;
-        private readonly ITeamRepository _teamRepository;
-        private readonly IRoleRepository _roleRepository;
+        private readonly ILookupService _lookupService;
         private readonly IEventService _eventService;
 
         public CreateModel(
             IEventParticipantService eventParticipantService,
-            IPersonRepository personRepository,
-            ITeamRepository teamRepository,
-            IRoleRepository roleRepository,
+            ILookupService lookupService,
             IEventService eventService)
         {
             _eventParticipantService = eventParticipantService;
-            _personRepository = personRepository;
-            _teamRepository = teamRepository;
-            _roleRepository = roleRepository;
+            _lookupService = lookupService;
             _eventService = eventService;
         }
 
@@ -102,7 +96,8 @@ namespace Encontro.WebUI.Pages.Participantes
                 await _eventParticipantService.CreateAsync(Participant);
                 
                 // Get person name for success message
-                var person = await _personRepository.GetByIdAsync(Participant.PersonId);
+                var people = await _lookupService.GetPeopleForSelectionAsync();
+                var person = people.FirstOrDefault(p => p.Id == Participant.PersonId);
                 var personName = person?.Name ?? "Participante";
                 
                 TempData["SuccessMessage"] = $"{personName} adicionado(a) ao evento com sucesso!";
@@ -135,14 +130,14 @@ namespace Encontro.WebUI.Pages.Participantes
             CurrentEvent = (await _eventService.GetByIdAsync(EventId))!;
 
             // Load people
-            var people = await _personRepository.GetAllAsync();
+            var people = await _lookupService.GetPeopleForSelectionAsync();
             PeopleSelectList = new SelectList(
                 people.OrderBy(p => p.Name),
                 "Id",
                 "Name");
 
             // Load teams with Order - Name format
-            var teams = await _teamRepository.GetAllAsync();
+            var teams = await _lookupService.GetTeamsForSelectionAsync();
             var teamList = teams
                 .OrderBy(t => t.Order)
                 .Select(t => new
@@ -153,7 +148,7 @@ namespace Encontro.WebUI.Pages.Participantes
             TeamsSelectList = new SelectList(teamList, "Id", "Display");
             
             // Load roles
-            var roles = await _roleRepository.GetAllAsync();
+            var roles = await _lookupService.GetRolesForSelectionAsync();
             var roleList = roles.Select(r => new
             {
                 Id = r.Id,

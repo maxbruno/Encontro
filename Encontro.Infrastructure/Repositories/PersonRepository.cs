@@ -85,13 +85,12 @@ public class PersonRepository : IPersonRepository
             return await GetAllAsync();
         }
 
-        var term = searchTerm.ToLower();
         return await _context.People
-            .Where(p => p.Name.ToLower().Contains(term) ||
-                       (p.Type != null && p.Type.ToLower().Contains(term)) ||
-                       (p.Email != null && p.Email.ToLower().Contains(term)) ||
-                       (p.CellPhone != null && p.CellPhone.Contains(term)) ||
-                       (p.Group != null && p.Group.ToLower().Contains(term)))
+            .Where(p => EF.Functions.Like(p.Name, $"%{searchTerm}%") ||
+                       (p.Type != null && EF.Functions.Like(p.Type, $"%{searchTerm}%")) ||
+                       (p.Email != null && EF.Functions.Like(p.Email, $"%{searchTerm}%")) ||
+                       (p.CellPhone != null && p.CellPhone.Contains(searchTerm)) ||
+                       (p.Group != null && EF.Functions.Like(p.Group, $"%{searchTerm}%")))
             .OrderBy(p => p.Name)
             .ToListAsync();
     }

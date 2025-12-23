@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Encontro.Domain.Interfaces;
 
 namespace Encontro.Domain.Entities;
 
@@ -11,7 +12,7 @@ public enum EventType
     ECC = 2
 }
 
-public class Event
+public class Event : ISoftDeletable
 {
     public int Id { get; set; }
 
@@ -37,4 +38,9 @@ public class Event
 
     [Display(Name = "Data de Atualização")]
     public DateTime UpdatedAt { get; set; }
+
+    // Soft Delete
+    public bool IsDeleted { get; set; }
+    public DateTime? DeletedAt { get; set; }
+    public string? DeletedBy { get; set; }
 }

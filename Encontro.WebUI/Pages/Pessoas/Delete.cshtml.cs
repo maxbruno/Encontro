@@ -10,14 +10,18 @@ namespace Encontro.WebUI.Pages.Pessoas
     public class DeleteModel : PageModel
     {
         private readonly IPersonService _personService;
+        private readonly IEventParticipantService _eventParticipantService;
 
-        public DeleteModel(IPersonService personService)
+        public DeleteModel(IPersonService personService, IEventParticipantService eventParticipantService)
         {
             _personService = personService;
+            _eventParticipantService = eventParticipantService;
         }
 
         [BindProperty]
         public Person Person { get; set; } = default!;
+        
+        public IEnumerable<EventParticipant> EventParticipations { get; set; } = new List<EventParticipant>();
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -34,6 +38,10 @@ namespace Encontro.WebUI.Pages.Pessoas
             }
 
             Person = person;
+            
+            // Carregar eventos onde pessoa participa
+            EventParticipations = await _eventParticipantService.GetByPersonIdAsync(id.Value);
+            
             return Page();
         }
 
@@ -51,6 +59,7 @@ namespace Encontro.WebUI.Pages.Pessoas
                 return NotFound();
             }
 
+            TempData["SuccessMessage"] = "Pessoa inativada com sucesso.";
             return RedirectToPage("./Index");
         }
     }

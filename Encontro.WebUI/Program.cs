@@ -40,21 +40,10 @@ builder.Services.AddScoped<IStorageService>(sp =>
 
 // Register services from Application layer
 builder.Services.AddScoped<IImageService, ImageService>();
-builder.Services.AddScoped<IPersonService>(sp =>
-{
-    var repository = sp.GetRequiredService<IPersonRepository>();
-    var imageService = sp.GetRequiredService<IImageService>();
-    var environment = sp.GetRequiredService<IWebHostEnvironment>();
-    return new PersonService(repository, imageService, environment.WebRootPath);
-});
-builder.Services.AddScoped<IEventService>(sp =>
-{
-    var repository = sp.GetRequiredService<IEventRepository>();
-    var imageService = sp.GetRequiredService<IImageService>();
-    var environment = sp.GetRequiredService<IWebHostEnvironment>();
-    return new EventService(repository, imageService, environment.WebRootPath);
-});
+builder.Services.AddScoped<IPersonService, PersonService>();
+builder.Services.AddScoped<IEventService, EventService>();
 builder.Services.AddScoped<IEventParticipantService, EventParticipantService>();
+builder.Services.AddScoped<ILookupService, LookupService>();
 
 // Configure Identity with Roles
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => {
@@ -78,20 +67,20 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 var app = builder.Build();
 
-// Seed roles and admin user
+// Seed roles and admin user (async to prevent deadlocks)
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     try
     {
-        Encontro.WebUI.Data.DbInitializer.Initialize(services).Wait();
+        await Encontro.WebUI.Data.DbInitializer.Initialize(services);
         
         // Seed test data only in development environment
         if (app.Environment.IsDevelopment())
         {
             var context = services.GetRequiredService<AppDbContext>();
             var seeder = new DevDataSeeder(context);
-            seeder.SeedTestEventParticipantsAsync().Wait();
+            await seeder.SeedTestEventParticipantsAsync();
         }
     }
     catch (Exception ex)

@@ -13,19 +13,16 @@ namespace Encontro.WebUI.Pages.Eventos
     {
         private readonly IEventService _eventService;
         private readonly IEventParticipantService _eventParticipantService;
-        private readonly ITeamRepository _teamRepository;
-        private readonly IRoleRepository _roleRepository;
+        private readonly ILookupService _lookupService;
 
         public DetailsModel(
             IEventService eventService,
             IEventParticipantService eventParticipantService,
-            ITeamRepository teamRepository,
-            IRoleRepository roleRepository)
+            ILookupService lookupService)
         {
             _eventService = eventService;
             _eventParticipantService = eventParticipantService;
-            _teamRepository = teamRepository;
-            _roleRepository = roleRepository;
+            _lookupService = lookupService;
         }
 
         public Event Event { get; set; } = default!;
@@ -122,7 +119,7 @@ namespace Encontro.WebUI.Pages.Eventos
             FilteredParticipants = ApplySorting(FilteredParticipants);
 
             // Load teams for filter dropdown
-            var teams = await _teamRepository.GetAllAsync();
+            var teams = await _lookupService.GetTeamsForSelectionAsync();
             var teamList = teams.Select(t => new
             {
                 Id = t.Id.ToString(),
@@ -134,7 +131,7 @@ namespace Encontro.WebUI.Pages.Eventos
             TeamsSelectList = new SelectList(teamList, "Id", "Display");
 
             // Load roles for filter dropdown
-            var roles = await _roleRepository.GetAllAsync();
+            var roles = await _lookupService.GetRolesForSelectionAsync();
             var roleList = roles.Select(r => new
             {
                 Id = r.Id.ToString(),
