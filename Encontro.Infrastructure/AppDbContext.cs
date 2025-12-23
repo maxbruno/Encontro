@@ -1,5 +1,6 @@
 using Encontro.Domain.Entities;
 using Encontro.Domain.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
@@ -8,8 +9,12 @@ namespace Encontro.Infrastructure
 {
     public class AppDbContext : IdentityDbContext
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) 
+        private readonly IHttpContextAccessor? _httpContextAccessor;
+
+        public AppDbContext(DbContextOptions<AppDbContext> options, IHttpContextAccessor? httpContextAccessor = null) 
+            : base(options) 
         {
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public DbSet<Person> People { get; set; }
@@ -78,6 +83,8 @@ namespace Encontro.Infrastructure
 
         private void UpdateSoftDeleteProperties()
         {
+            var currentUser = _httpContextAccessor?.HttpContext?.User?.Identity?.Name;
+
             foreach (var entry in ChangeTracker.Entries<ISoftDeletable>())
             {
                 if (entry.State == EntityState.Deleted)
@@ -85,7 +92,7 @@ namespace Encontro.Infrastructure
                     entry.State = EntityState.Modified;
                     entry.Entity.IsDeleted = true;
                     entry.Entity.DeletedAt = DateTime.UtcNow;
-                    // DeletedBy pode ser preenchido por um serviço que tenha acesso ao usuário atual
+                    entry.Entity.DeletedBy = currentUser;
                 }
             }
         }

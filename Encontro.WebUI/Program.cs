@@ -45,6 +45,9 @@ builder.Services.AddScoped<IEventService, EventService>();
 builder.Services.AddScoped<IEventParticipantService, EventParticipantService>();
 builder.Services.AddScoped<ILookupService, LookupService>();
 
+// Add HttpContextAccessor for user tracking in soft deletes
+builder.Services.AddHttpContextAccessor();
+
 // Configure Identity with Roles
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => {
     options.SignIn.RequireConfirmedAccount = true;
