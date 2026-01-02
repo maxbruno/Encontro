@@ -12,14 +12,26 @@ class DatabaseSeeder extends Seeder
 
     /**
      * Seed the application's database.
+     * 
+     * Order matches the .NET DbInitializer:
+     * 1. Teams
+     * 2. Roles (domain)
+     * 3. Admin User
+     * 4. Dev Test Data (only in development)
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        $this->call([
+            TeamSeeder::class,
+            RoleSeeder::class,
+            AdminUserSeeder::class,
         ]);
+
+        // Seed test data only in development environment
+        if (app()->environment('local', 'development')) {
+            $this->call([
+                DevDataSeeder::class,
+            ]);
+        }
     }
 }
